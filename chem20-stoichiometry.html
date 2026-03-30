@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LearnAlberta — Chemistry 20: Stoichiometry (Unit 2)</title>
+<style>
+:root{--bg:#f5f7fa;--card:#fff;--text:#1a1a2e;--accent:#2563eb;--accent2:#7c3aed;--border:#e2e8f0;--success:#16a34a;--warning:#d97706;--error:#dc2626;--formula-bg:#eff6ff;--highlight:#fef3c7;--nav-bg:#1e293b;--chat-bg:#f1f5f9}
+[data-theme=dark]{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--border:#334155;--formula-bg:#1e3a5f;--highlight:#422006;--chat-bg:#0f172a;--nav-bg:#020617}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:all .3s}
+header{background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;padding:15px 20px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.header-row{display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:0 auto}
+header h1{font-size:1.4em;font-weight:700}
+header span{font-size:.85em;opacity:.8}
+.controls{display:flex;gap:8px}
+.controls button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:.8em}
+.controls button:hover{background:rgba(255,255,255,.25)}
+nav{background:var(--nav-bg);padding:8px 20px;overflow-x:auto;white-space:nowrap;display:flex;gap:6px}
+nav button{background:transparent;border:1px solid rgba(255,255,255,.2);color:#94a3b8;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:.8em;white-space:nowrap;transition:all .2s}
+nav button:hover,nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+main{max-width:1200px;margin:0 auto;padding:20px;display:flex;gap:20px}
+.content{flex:1;min-width:0}
+.topic{background:var(--card);border-radius:12px;margin-bottom:16px;border:1px solid var(--border);overflow:hidden;transition:all .3s}
+.topic-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.topic-header:hover{background:var(--formula-bg)}
+.topic-header h2{font-size:1.15em;color:var(--accent)}
+.topic-header .arrow{transition:transform .3s;font-size:1.2em}
+.topic.open .arrow{transform:rotate(180deg)}
+.topic-body{display:none;padding:0 20px 20px}
+.topic.open .topic-body{display:block}
+.concept-box{background:var(--formula-bg);border-left:4px solid var(--accent);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+.formula{background:var(--highlight);padding:10px 14px;border-radius:8px;font-family:'Courier New',monospace;font-size:1em;margin:10px 0;text-align:center;font-weight:600}
+.example{background:var(--card);border:1px solid var(--border);border-radius:8px;margin:12px 0;overflow:hidden}
+.example-header{padding:10px 14px;background:var(--formula-bg);font-weight:600;font-size:.95em}
+.example-body{padding:14px}
+.step{margin:6px 0;padding-left:16px;border-left:2px solid var(--border)}
+.given{color:#2563eb;font-weight:500}
+.answer{color:#dc2626;font-weight:700}
+.calc{font-family:'Courier New',monospace;font-size:.9em;background:var(--formula-bg);padding:8px 12px;border-radius:6px;margin:6px 0;overflow-x:auto}
+.practice{border:2px dashed var(--accent2);border-radius:10px;padding:16px;margin:14px 0}
+.practice h3{color:var(--accent2);margin-bottom:8px;font-size:1em}
+.show-btn{background:var(--accent);color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:.85em;margin-top:8px}
+.show-btn:hover{opacity:.85}
+.solution{display:none;margin-top:10px;padding:12px;background:var(--formula-bg);border-radius:8px;border-left:3px solid var(--success)}
+.solution.visible{display:block}
+.quiz{background:var(--card);border:2px solid var(--accent);border-radius:10px;padding:16px;margin:14px 0}
+.quiz h3{color:var(--accent);margin-bottom:10px}
+.quiz label{display:block;padding:6px 10px;margin:4px 0;border-radius:6px;cursor:pointer}
+.quiz label:hover{background:var(--formula-bg)}
+.quiz .feedback{margin-top:8px;padding:8px 12px;border-radius:6px;font-weight:600;display:none}
+.quiz .feedback.correct{display:block;background:#dcfce7;color:#16a34a}
+.quiz .feedback.wrong{display:block;background:#fee2e2;color:#dc2626}
+[data-theme=dark] .quiz .feedback.correct{background:#052e16;color:#4ade80}
+[data-theme=dark] .quiz .feedback.wrong{background:#450a0a;color:#f87171}
+.checklist{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border);margin-bottom:16px}
+.checklist h3{margin-bottom:10px;color:var(--accent)}
+.checklist label{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:.9em;cursor:pointer}
+.checklist input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent)}
+.chat-widget{position:fixed;bottom:20px;right:20px;z-index:200}
+.chat-btn{width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;font-size:1.5em;box-shadow:0 4px 12px rgba(37,99,235,.4);transition:transform .2s}
+.chat-btn:hover{transform:scale(1.1)}
+.chat-panel{display:none;position:fixed;bottom:86px;right:20px;width:360px;max-height:500px;background:var(--card);border-radius:16px;border:1px solid var(--border);box-shadow:0 8px 30px rgba(0,0,0,.15);overflow:hidden;flex-direction:column;z-index:200}
+.chat-panel.open{display:flex}
+.chat-header{background:var(--accent);color:#fff;padding:12px 16px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.chat-header button{background:none;border:none;color:#fff;cursor:pointer;font-size:1.2em}
+.chat-messages{flex:1;overflow-y:auto;padding:12px;max-height:350px;min-height:200px}
+.chat-msg{margin:6px 0;padding:8px 12px;border-radius:10px;max-width:85%;font-size:.88em;line-height:1.4}
+.chat-msg.bot{background:var(--chat-bg);align-self:flex-start}
+.chat-msg.user{background:var(--accent);color:#fff;margin-left:auto}
+.chat-input{display:flex;border-top:1px solid var(--border);padding:8px}
+.chat-input input{flex:1;border:1px solid var(--border);border-radius:20px;padding:8px 14px;font-size:.88em;background:var(--bg);color:var(--text);outline:none}
+.chat-input button{background:var(--accent);color:#fff;border:none;border-radius:50%;width:36px;height:36px;margin-left:6px;cursor:pointer;font-size:1em}
+.reaction{font-family:'Courier New',monospace;font-size:.95em;padding:6px 0}
+sub{font-size:.75em}
+@media(max-width:768px){main{flex-direction:column;padding:10px}header h1{font-size:1.1em}.chat-panel{width:calc(100% - 40px);right:20px;bottom:80px}}
+</style>
+</head>
+<body>
+<header>
+<div class="header-row">
+<div><h1>LearnAlberta — Chemistry 20</h1><span>Unit 2: Stoichiometry</span></div>
+<div class="controls">
+<button onclick="toggleDark()">🌙 Dark</button>
+<button onclick="expandAll()">📖 Expand All</button>
+</div>
+</div>
+</header>
+<nav id="topnav">
+<button class="active" onclick="scrollTo2('checklist')">📋 Study Guide</button>
+<button onclick="scrollTo2('t1')">T1: Mole Ratios</button>
+<button onclick="scrollTo2('t2')">T2: Mass-Mass</button>
+<button onclick="scrollTo2('t3')">T3: % Yield</button>
+<button onclick="scrollTo2('t4')">T4: Limiting</button>
+<button onclick="scrollTo2('t5')">T5: Molarity</button>
+<button onclick="scrollTo2('t6')">T6: Titration</button>
+<button onclick="scrollTo2('t7')">T7: Curves</button>
+</nav>
+<main>
+<div class="content">
+
+<!-- STUDY GUIDE CHECKLIST -->
+<div class="checklist" id="checklist">
+<h3>📋 Exam Study Checklist</h3>
+<label><input type="checkbox"> Mole calculations: molar mass, converting moles ↔ mass</label>
+<label><input type="checkbox"> Balancing equations</label>
+<label><input type="checkbox"> Applying mole ratios to find amounts of other substances</label>
+<label><input type="checkbox"> Full stoichiometric process: mass/volume → mol → ratio → mol → mass/volume</label>
+<label><input type="checkbox"> Limiting reagent & excess reagent calculations</label>
+<label><input type="checkbox"> Percent yield (actual vs theoretical)</label>
+<label><input type="checkbox"> Titration equipment and process</label>
+<label><input type="checkbox"> Solving titration problems (unknown concentration)</label>
+<label><input type="checkbox"> pH calculation beyond equivalence point</label>
+<label><input type="checkbox"> Titration curves for strong acid–strong base</label>
+<label><input type="checkbox"> Reading key values from titration curves</label>
+<label><input type="checkbox"> Choosing appropriate indicators</label>
+</div>
+
+<!-- TOPIC 1 -->
+<div class="topic open" id="t1">
+<div class="topic-header" onclick="toggleTopic(this)">
+<h2>Topic 1: Mole Ratios</h2><span class="arrow">▼</span>
+</div>
+<div class="topic-body">
+<div class="concept-box">
+<strong>Key Concept:</strong> A balanced equation tells us the <em>mole ratio</em> of all reactants and products. Use this ratio to convert moles of one substance to moles of another.
+</div>
+<div class="formula">n(target) = n(given) × (coefficient of target ÷ coefficient of given)</div>
+
+<div class="example">
+<div class="example-header">Example 1: Silver Chromate Precipitation</div>
+<div class="example-body">
+<div class="reaction">2AgNO<sub>3</sub>(aq) + Na<sub>2</sub>CrO<sub>4</sub>(aq) → Ag<sub>2</sub>CrO<sub>4</sub>(s) + 2NaNO<sub>3</sub>(aq)</div>
+<p><strong>Ratio:</strong> 2 mol AgNO<sub>3</sub> : 1 mol Na<sub>2</sub>CrO<sub>4</sub> : 1 mol Ag<sub>2</sub>CrO<sub>4</sub> : 2 mol NaNO<sub>3</sub></p>
+<p><strong>Q:</strong> What amount of Ag<sub>2</sub>CrO<sub>4</sub> is produced from <span class="given">0.50 mol AgNO<sub>3</sub></span>?</p>
+<div class="calc">n(Ag<sub>2</sub>CrO<sub>4</sub>) = 0.50 mol AgNO<sub>3</sub> × (1 mol Ag<sub>2</sub>CrO<sub>4</sub> / 2 mol AgNO<sub>3</sub>) = <span class="answer">0.25 mol</span></div>
+</div>
+</div>
+
+<div class="example">
+<div class="example-header">Example 2: Urea Production</div>
+<div class="example-body">
+<div class="reaction">2NH<sub>3</sub>(g) + CO<sub>2</sub>(g) → NH<sub>2</sub>CONH<sub>2</sub>(s) + H<sub>2</sub>O(g)</div>
+<p><strong>Q:</strong> How much NH<sub>3</sub> is needed to prepare <span class="given">1.30 mol</span> of urea?</p>
+<div class="calc">n(NH<sub>3</sub>) = 1.30 mol urea × (2 mol NH<sub>3</sub> / 1 mol urea) = <span class="answer">2.60 mol NH<sub>3</sub></span></div>
+</div>
+</div>
+
+<div class="example">
+<div class="example-header">Example 3: Combustion of Methane</div>
+<div class="example-body">
+<div class="reaction">CH<sub>4</sub>(g) + 2O<sub>2</sub>(g) → CO<sub>2</sub>(g) + 2H<sub>2</sub>O(g)</div>
+<p><strong>a)</strong> <span class="given">20 mol CH<sub>4</sub></span> burned → CO<sub>2</sub>?</p>
+<div class="calc">n(CO<sub>2</sub>) = 20 mol × (1/1) = <span class="answer">20 mol CO<sub>2</sub></span></div>
+<p><strong>b)</strong> Only <span class="given">15 mol O<sub>2</sub></span> available → how much CH<sub>4</sub> burns?</p>
+<div class="calc">n(CH<sub>4</sub>) = 15 mol O<sub>2</sub> × (1 mol CH<sub>4</sub> / 2 mol O<sub>2</sub>) = <span class="answer">7.5 mol CH<sub>4</sub></span></div>
+<p><strong>c)</strong> <span class="given">12 mol CO<sub>2</sub></span> produced → H<sub>2</sub>O?</p>
+<div class="calc">n(H<sub>2</sub>O) = 12 mol CO<sub>2</sub> × (2 mol H<sub>2</sub>O / 1 mol CO<sub>2</sub>) = <span class="answer">24 mol H<sub>2</sub>O</span></div>
+</div>
+</div>
+
+<div class="practice">
+<h3>🧪 Practice Problem</h3>
+<p>For: N<sub>2</sub> + 3H<sub>2</sub> → 2NH<sub>3</sub></p>
+<p>How many moles of N<sub>2</sub> are needed to react with 7.5 mol H<sub>2</sub>?</p>
+<button class="show-btn" onclick="toggleSolution(this)">Show Solution</button>
+<div class="solution">
+<div class="calc">n(N<sub>2</sub>) = 7.5 mol H<sub>2</sub> × (1 mol N<sub>2</sub> / 3 mol H<sub>2</sub>) = <span class="answer">2.5 mol N<sub>2</sub></span></div>
+</div>
+</div>
+
+<div class="quiz" id="q1">
+<h3>Quick Quiz</h3>
+<p>For: 2NH<sub>3</sub> + H<sub>2</sub>SO<sub>4</sub> → (NH<sub>4</sub>)<sub>2</sub>SO<sub>4</sub><br>How much NH<sub>3</sub> to make 20,000 mol (NH<sub>4</sub>)<sub>2</sub>SO<sub>4</sub>?</p>
+<label><input type="radio" name="q1" value="a" onclick="checkQuiz('q1','b')"> 10,000 mol</label>
+<label><input type="radio" name="q1" value="b" onclick="checkQuiz('q1','b')"> 40,000 mol</label>
+<label><input type="radio" name="q1" value="c" onclick="checkQuiz('q1','b')"> 20,000 mol</label>
+<div class="feedback"></div>
+</div>
+</div>
+</div>
+
+<!-- TOPIC 2 -->
+<div class="topic" id="t2">
+<div class="topic-header" onclick="toggleTopic(this)">
+<h2>Topic 2: Mass-to-Mass Stoichiometry</h2><span class="arrow">▼</span>
+</div>
+<div class="topic-body">
+<div class="concept-box">
+<strong>Key Concept:</strong> Convert mass → moles (÷ molar mass), apply mole ratio, then convert back to mass (× molar mass). The "stoichiometric bridge" always goes through moles.
+</div>
+<div class="formula">m(target) = m(given) × (1/M<sub>given</sub>) × (coeff<sub>target</sub>/coeff<sub>given</sub>) × M<sub>target</sub></div>
+
+<div class="example">
+<div class="example-header">Example 1: Ethanoic Acid Production</div>
+<div class="example-body">
+<div class="reaction">CH<sub>3</sub>OH(l) + CO(g) → CH<sub>3</sub>COOH(l)</div>
+<p><strong>Q:</strong> Mass of CH<sub>3</sub>COOH from <span class="given">6.0 × 10<sup>4</sup> g CO</span>?</p>
+<div class="step">M(CO) = 28.01 g/mol &nbsp;|&nbsp; M(CH<sub>3</sub>COOH) = 60.06 g/mol</div>
+<div class="calc">m = 6.0×10<sup>4</sup> g × (mol/28.01 g) × (1/1) × (60.06 g/mol) = <span class="answer">1.3 × 10<sup>5</sup> g</span></div>
+</div>
+</div>
+
+<div class="example">
+<div class="example-header">Example 2: Sodium Hydroxide Production</div>
+<div class="example-body">
+<div class="reaction">2NaCl(aq) + 2H<sub>2</sub>O(l) → 2NaOH(aq) + Cl<sub>2</sub>(g) + H<sub>2</sub>(g)</div>
+<p><strong>Q:</strong> Mass of NaCl to produce <span class="given">400 kg NaOH</span>?</p>
+<div class="step">M(NaOH) = 40.00 g/mol &nbsp;|&nbsp; M(NaCl) = 58.44 g/mol &nbsp;|&nbsp; Ratio: 2:2 = 1:1</div>
+<div class="calc">m = 400 kg × (1000 g/kg) × (mol/40.00 g) × (1/1) × (58.44 g/mol) = <span class="answer">584 kg NaCl</span></div>
+</div>
+</div>
+
+<div class="example">
+<div class="example-header">Example 3: Aluminium from Bauxite</div>
+<div class="example-body">
+<div class="reaction">2Al<sub>2</sub>O<sub>3</sub>(s) → 4Al(s) + 3O<sub>2</sub>(g)</div>
+<p><strong>Q:</strong> Mass of Al from <span class="given">125 g Al<sub>2</sub>O<sub>3</sub></span>?</p>
+<div class="step">M(Al<sub>2</sub>O<sub>3</sub>) = 101.96 g/mol &nbsp;|&nbsp; M(Al) = 26.98 g/mol</div>
+<div class="calc">m = 125 g × (mol/101.96 g) × (4 mol Al/2 mol Al<sub>2</sub>O<sub>3</sub>) × (26.98 g/mol) = <span class="answer">66.2 g Al</span></div>
+</div>
+</div>
+
+<div class="practice">
+<h3>🧪 Practice Problem</h3>
+<p>2Fe(s) + 3Cl<sub>2</sub>(g) → 2FeCl<sub>3</sub>(s)</p>
+<p>How many grams of Cl<sub>2</sub> react with 4.65 mol Fe? (M<sub>Cl₂</sub> = 70.90 g/mol)</p>
+<button class="show-btn" onclick="toggleSolution(this)">Show Solution</button>
+<div class="solution">
+<div class="calc">m(Cl<sub>2</sub>) = 4.65 mol Fe × (3 mol Cl<sub>2</sub>/2 mol Fe) × (70.90 g/mol) = <span class="answer">495 g</span></div>
+</div>
+</div>
+
+<div class="practice">
+<h3>🧪 Practice Problem</h3>
+<p>Pb(NO<sub>3</sub>)<sub>2</sub>(aq) + 2KBr(aq) → PbBr<sub>2</sub>(s) + 2KNO<sub>3</sub>(aq)</p>
+<p>Predict mass of precipitate from 3.50 g Pb(NO<sub>3</sub>)<sub>2</sub>. (M = 331.2, 367.0 g/mol)</p>
+<button class="show-btn" onclick="toggleSolution(this)">Show Solution</button>
+<div class="solution">
+<div class="calc">m(PbBr<sub>2</sub>) = 3.50 g × (mol/331.2 g) × (1/1) × (367.0 g/mol) = <span class="answer">3.88 g</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TOPIC 3 -->
+<div class="topic" id="t3">
+<div class="topic-header" onclick="toggleTopic(this)">
+<h2>Topic 3: Percent Yield</h2><span class="arrow">▼</span>
+</div>
+<div class="topic-body">
+<div class="concept-box">
+<strong>Key Concept:</strong> The <em>theoretical yield</em> is calculated by stoichiometry. The <em>actual yield</em> is measured experimentally. Percent yield compares the two.
+</div>
+<div class="formula">% Yield = (actual yield ÷ theoretical yield) × 100%</div>
+<div class="formula">actual yield = (% yield × theoretical yield) ÷ 100%</div>
+
+<div class="example">
+<div class="example-header">Example 1: Strontium Sulfate (93.9%)</div>
+<div class="example-body">
+<div class="reaction">Sr(NO<sub>3</sub>)<sub>2</sub>(aq) + CuSO<sub>4</sub>(aq) → SrSO<sub>4</sub>(s) + Cu(NO<sub>3</sub>)<sub>2</sub>(aq)</div>
+<p><span class="given">1.84 g Sr(NO<sub>3</sub>)<sub>2</sub></span> reacted, <span class="given">1.50 g SrSO<sub>4</sub></span> obtained.</p>
+<div class="calc">m<sub>theor</sub> = 1.84 g × (mol/211.63 g) × (183.68 g/mol) = 1.597 g<br>% Yield = (1.50/1.597) × 100% = <span class="answer">93.9%</span></div>
+</div>
+</div>
+
+<div class="example">
+<div class="example-header">Example 2: Iron and Copper Chloride (79%)</div>
+<div class="example-body">
+<div class="reaction">Fe(s) + CuCl<sub>2</sub>(aq) → FeCl<sub>2</sub>(aq) + Cu(s)</div>
+<p><span class="given">10.0 g Fe</span> reacted, <span class="given">9.0 g Cu</span> obtained.</p>
+<div class="calc">m<sub>theor</sub> = 10.0 g × (mol/55.85 g) × (63.55 g/mol) = 11.4 g<br>% Yield = (9.0/11.4) × 100% = <span class="answer">79%</span></div>
+</div>
+</div>
+
+<div class="example">
+<div class="example-header">Example 3: Finding Actual Yield from % Yield</div>
+<div class="example-body">
+<div class="reaction">2C<sub>4</sub>H<sub>10</sub>(g) + 13O<sub>2</sub>(g) → 8CO<sub>2</sub>(g) + 10H<sub>2</sub>O(g)</div>
+<p><span class="given">2.98 g butane</span>, % yield = <span class="given">58.9%</span>. Find actual yield of CO<sub>2</sub>.</p>
+<div class="calc">m<sub>theor</sub> = 2.98 g × (mol/58.14 g) × (8/2) × (44.01 g/mol) = 9.02 g<br>m<sub>actual</sub> = (58.9% × 9.02 g) / 100% = <span class="answer">5.31 g</span></div>
+</div>
+</div>
+
+<div class="concept-box" style="border-left-color:var(--error)">
+<strong>⚠️ Can % yield be over 100%?</strong> Technically no — it means something went wrong: impurities, wrong product, measurement error, or incomplete drying. If you calculate >100%, check your work!
+</div>
+
+<div class="practice">
+<h3>🧪 Practice Problem</h3>
+<p>S<sub>8</sub>(s) + 8O<sub>2</sub>(g) → 8SO<sub>2</sub>(g). If 60 g SO<sub>2</sub> is produced from 50 g S<sub>8</sub>, find % yield.</p>
+<button class="show-btn" onclick="toggleSolution(this)">Show Solution</button>
+<div class="solution">
+<div class="calc">m<sub>theor</sub> = 50 g × (mol/256.56 g) × 8 × (64.07 g/mol) = 99.9 g<br>% Yield = (60/99.9) × 100% = <span class="answer">60%</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TOPIC 4 -->
+<div class="topic" id="t4">
+<div class="topic-header" onclick="toggleTopic(this)">
+<h2>Topic 4: Limiting Reagent</h2><span class="arrow">▼</span>
+</div>
+<div class="topic-body">
+<div class="concept-box">
+<strong>Key Concept:</strong> When two reactants are given, calculate the product from <em>each</em> reactant separately. The one that gives <strong>less product = LIMITING reagent</strong>. The other is in <strong>excess</strong>.
+</div>
+<div class="formula">Leftover of excess = Total amount − Amount used by limiting reagent</div>
+
+<div class="example">
+<div class="example-header">Example 1: Mole-Based (Al + HBr)</div>
+<div class="example-body">
+<div class="reaction">2Al + 6HBr → 2AlBr<sub>3</sub> + 3H<sub>2</sub></div>
+<p><span class="given">3.22 mol Al</span> + <span class="given">4.96 mol HBr</span> → how many mol H<sub>2</sub>?</p>
+<div class="calc">From Al: n(H<sub>2</sub>) = 3.22 × (3/2) = 4.83 mol → <strong>EXCESS</strong><br>From HBr: n(H<sub>2</sub>) = 4.96 × (3/6) = <span class="answer">2.48 mol</span> → <strong>LIMITING ✓</strong></div>
+<p><strong>Leftover Al:</strong></p>
+<div class="calc">Al used = 4.96 × (2/6) = 1.65 mol<br>Leftover = 3.22 − 1.65 = <span class="answer">1.57 mol Al</span></div>
+</div>
+</div>
+
+<div class="example">
+<div class="example-header">Example 2: Mass-Based (C₆H₁₀ + O₂)</div>
+<div class="example-body">
+<div class="reaction">2C<sub>6</sub>H<sub>10</sub>(l) + 17O<sub>2</sub>(g) → 12CO<sub>2</sub>(g) + 10H<sub>2</sub>O(g)</div>
+<p><span class="given">35 g C<sub>6</sub>H<sub>10</sub></span> + <span class="given">45 g O<sub>2</sub></span></p>
+<div class="calc">From C<sub>6</sub>H<sub>10</sub>: n(CO<sub>2</sub>) = (35/82.16) × (12/2) = 2.56 mol → EXCESS<br>From O<sub>2</sub>: n(CO<sub>2</sub>) = (45/32.00) × (12/17) = 0.993 mol → <strong>LIMITING ✓</strong><br><br>m(CO<sub>2</sub>) = 0.993 × 44.01 = <span class="answer">44 g</span> (2 sig figs)</div>
+</div>
+</div>
+
+<div class="practice">
+<h3>🧪 Practice Problem</h3>
+<p>3Si + 2N<sub>2</sub> → Si<sub>3</sub>N<sub>4</sub>. Given 21.44 mol Si and 17.62 mol N<sub>2</sub>, find moles of Si<sub>3</sub>N<sub>4</sub> and identify limiting reagent.</p>
+<button class="show-btn" onclick="toggleSolution(this)">Show Solution</button>
+<div class="solution">
+<div class="calc">From Si: n = 21.44 × (1/3) = 7.15 mol → <strong>LIMITING</strong><br>From N<sub>2</sub>: n = 17.62 × (1/2) = 8.81 mol → EXCESS<br>Answer: <span class="answer">7.15 mol Si<sub>3</sub>N<sub>4</sub></span>, Si is limiting<br>N<sub>2</sub> leftover = 17.62 − 21.44×(2/3) = <span class="answer">3.33 mol</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TOPIC 5 -->
+<div class="topic" id="t5">
+<div class="topic-header" onclick="toggleTopic(this)">
+<h2>Topic 5: Stoichiometry with Molarity</h2><span class="arrow">▼</span>
+</div>
+<div class="topic-body">
+<div class="concept-box">
+<strong>Key Concept:</strong> Molarity (c) connects moles and volume: <strong>n = c × V</strong>. Use this to convert between mass/moles and solution volumes.
+</div>
+<div class="formula">n = c × V &nbsp;&nbsp;|&nbsp;&nbsp; c = n/V &nbsp;&nbsp;|&nbsp;&nbsp; V = n/c</div>
+
+<div class="example">
+<div class="example-header">Example 1: Volume of HCl Needed</div>
+<div class="example-body">
+<div class="reaction">Ca(OH)<sub>2</sub>(s) + 2HCl(aq) → CaCl<sub>2</sub>(aq) + 2H<sub>2</sub>O(l)</div>
+<p>How many litres of <span class="given">0.100 M HCl</span> react with <span class="given">5.00 g Ca(OH)<sub>2</sub></span>?</p>
+<div class="step">M(Ca(OH)<sub>2</sub>) = 74.10 g/mol</div>
+<div class="calc">V = 5.00 g × (mol/74.10 g) × (2 mol HCl/1 mol Ca(OH)<sub>2</sub>) × (L/0.100 mol) = <span class="answer">1.35 L</span></div>
+</div>
+</div>
+
+<div class="example">
+<div class="example-header">Example 2: Limiting Reagent with Molarity</div>
+<div class="example-body">
+<div class="reaction">Ca(OH)<sub>2</sub>(s) + 2HCl(aq) → CaCl<sub>2</sub>(aq) + 2H<sub>2</sub>O(l)</div>
+<p><span class="given">15.0 g Ca(OH)<sub>2</sub></span> + <span class="given">75.0 mL of 0.500 M HCl</span></p>
+<div class="calc">From Ca(OH)<sub>2</sub>: m(CaCl<sub>2</sub>) = 15.0/(74.10) × (1/1) × 110.98 = 22.5 g → EXCESS<br>From HCl: m(CaCl<sub>2</sub>) = 0.075 × 0.500 × (1/2) × 110.98 = <span class="answer">2.08 g</span> → LIMITING</div>
+</div>
+</div>
+
+<div class="example">
+<div class="example-header">Example 3: Antacid Neutralization</div>
+<div class="example-body">
+<div class="reaction">Al(OH)<sub>3</sub>(aq) + 3HCl(aq) → AlCl<sub>3</sub>(aq) + 3H<sub>2</sub>O(l)</div>
+<p>Volume of <span class="given">0.10 M HCl</span> neutralized by <span class="given">912 mg Al(OH)<sub>3</sub></span>?</p>
+<div class="calc">V = 0.912 g × (mol/78.01 g) × (3/1) × (L/0.10 mol) = <span class="answer">0.35 L</span></div>
+</div>
+</div>
+
+<div class="practice">
+<h3>🧪 Practice Problem</h3>
+<p>2FeCl<sub>3</sub>(aq) + 3Na<sub>2</sub>CO<sub>3</sub>(aq) → Fe<sub>2</sub>(CO<sub>3</sub>)<sub>3</sub>(s) + 6NaCl(aq)</p>
+<p>Min volume of 0.250 M Na<sub>2</sub>CO<sub>3</sub> to react with 75.0 mL of 0.200 M FeCl<sub>3</sub>?</p>
+<button class="show-btn" onclick="toggleSolution(this)">Show Solution</button>
+<div class="solution">
+<div class="calc">V = 0.0750 L × 0.200 × (3/2) × (1/0.250) = <span class="answer">90.0 mL</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TOPIC 6 -->
+<div class="topic" id="t6">
+<div class="topic-header" onclick="toggleTopic(this)">
+<h2>Topic 6: Titration Calculations</h2><span class="arrow">▼</span>
+</div>
+<div class="topic-body">
+<div class="concept-box">
+<strong>Key Concept:</strong> In a titration, a solution of <em>known</em> concentration (titrant) is added to a solution of <em>unknown</em> concentration (analyte) until they completely react (equivalence point).
+</div>
+<div class="concept-box" style="border-left-color:var(--accent2)">
+<strong>Endpoint vs Equivalence Point:</strong><br>
+• <strong>Equivalence point:</strong> Exact point where stoichiometrically equal amounts have reacted<br>
+• <strong>Endpoint:</strong> When the indicator changes colour (chosen to be as close to equivalence as possible)
+</div>
+<div class="formula">c<sub>unknown</sub> = V<sub>known</sub> × c<sub>known</sub> × (ratio) × (1/V<sub>unknown</sub>)</div>
+
+<div class="example">
+<div class="example-header">Example 1: HCl + NaOH (1:1)</div>
+<div class="example-body">
+<div class="reaction">HCl(aq) + NaOH(aq) → H<sub>2</sub>O(l) + NaCl(aq)</div>
+<p><span class="given">54 mL of 0.10 M NaOH</span> neutralizes <span class="given">125 mL HCl</span>.</p>
+<div class="calc">[HCl] = 0.054 × 0.10 × (1/1) × (1/0.125) = <span class="answer">0.043 mol/L</span></div>
+</div>
+</div>
+
+<div class="example">
+<div class="example-header">Example 2: H₂SO₄ + KOH (1:2 ratio)</div>
+<div class="example-body">
+<div class="reaction">H<sub>2</sub>SO<sub>4</sub>(aq) + 2KOH(aq) → 2H<sub>2</sub>O(l) + K<sub>2</sub>SO<sub>4</sub>(aq)</div>
+<p><span class="given">50 mL of 0.5 M KOH</span> neutralizes <span class="given">125 mL H<sub>2</sub>SO<sub>4</sub></span>.</p>
+<div class="calc">[H<sub>2</sub>SO<sub>4</sub>] = 0.050 × 0.5 × (1/2) × (1/0.125) = <span class="answer">0.1 mol/L</span></div>
+</div>
+</div>
+
+<div class="example">
+<div class="example-header">Example 3: Lulu Labwrecker — pH After Excess Acid</div>
+<div class="example-body">
+<p><span class="given">25.0 mL of 0.525 M NaOH</span> mixed with <span class="given">75.0 mL of 0.355 M HCl</span>.</p>
+<div class="calc">n(NaOH) = 0.0250 × 0.525 = 0.01313 mol<br>n(HCl) = 0.0750 × 0.355 = 0.02663 mol<br>HCl excess = 0.02663 − 0.01313 = 0.01350 mol<br>Total V = 100.0 mL = 0.1000 L<br>[HCl]<sub>excess</sub> = 0.01350/0.1000 = 0.135 M<br>pH = −log(0.135) = <span class="answer">0.870</span> → Acidic!</div>
+</div>
+</div>
+
+<div class="concept-box" style="border-left-color:var(--warning)">
+<strong>⚠️ Common Errors:</strong><br>
+• <strong>Stuck stopcock:</strong> Extra titrant added → calculated concentration of analyte will be too HIGH<br>
+• <strong>Water in buret:</strong> Dilutes titrant → need more volume → calculated concentration too HIGH
+</div>
+
+<div class="practice">
+<h3>🧪 Practice Problem</h3>
+<p>83 mL of 0.45 M NaOH neutralizes 235 mL of HCl. Find [HCl].</p>
+<button class="show-btn" onclick="toggleSolution(this)">Show Solution</button>
+<div class="solution">
+<div class="calc">[HCl] = 0.083 × 0.45 × (1/1) × (1/0.235) = <span class="answer">0.16 M</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TOPIC 7 -->
+<div class="topic" id="t7">
+<div class="topic-header" onclick="toggleTopic(this)">
+<h2>Topic 7: Titration Curves</h2><span class="arrow">▼</span>
+</div>
+<div class="topic-body">
+<div class="concept-box">
+<strong>Key Concept:</strong> A titration curve plots <strong>pH vs. volume of titrant</strong>. For strong acid + strong base, the equivalence point is always at <strong>pH = 7</strong> with a steep vertical section.
+</div>
+<div class="concept-box">
+<strong>Reading a Titration Curve:</strong><br>
+• <strong>Strong acid + strong base:</strong> steep vertical section centered at pH 7<br>
+• <strong>Acid in flask + base from buret:</strong> curve goes from low pH to high pH (↗)<br>
+• <strong>Base in flask + acid from buret:</strong> curve goes from high pH to low pH (↘)<br>
+• <strong>Equivalence point:</strong> middle of the steep vertical section
+</div>
+
+<div class="example">
+<div class="example-header">Example 1: NaOH titrated with HCl</div>
+<div class="example-body">
+<p><span class="given">25 mL of 0.10 M NaOH</span> titrated with <span class="given">0.20 M HCl</span></p>
+<div class="calc">Initial pH: pOH = −log(0.10) = 1.00 → pH = 14.00 − 1.00 = <span class="answer">13.00</span><br>V<sub>eq</sub> = 0.025 × 0.10 × (1/1) × (1/0.20) = <span class="answer">12.5 mL</span><br>pH at equivalence = <span class="answer">7</span><br>Curve: starts at pH 13 → drops steeply at 12.5 mL → levels off at low pH</div>
+</div>
+</div>
+
+<div class="example">
+<div class="example-header">Example 2: HNO₃ titrated with KOH</div>
+<div class="example-body">
+<div class="reaction">HNO<sub>3</sub>(aq) + KOH(aq) → H<sub>2</sub>O(l) + KNO<sub>3</sub>(aq)</div>
+<p><span class="given">20.0 mL of 0.030 M HNO<sub>3</sub></span> titrated with <span class="given">0.040 M KOH</span></p>
+<div class="calc">Initial pH = −log(0.030) = <span class="answer">1.52</span><br>V<sub>eq</sub> = 0.0200 × 0.030 × (1/1) × (1/0.040) = <span class="answer">15 mL KOH</span><br>At equivalence: H<sub>2</sub>O + KNO<sub>3</sub>, pH = <span class="answer">7</span><br>Curve: starts at pH ~1.5 → rises steeply at 15 mL → levels off at high pH</div>
+</div>
+</div>
+
+<div class="example">
+<div class="example-header">Example 3: Mg(OH)₂ + HNO₃ (2:1 ratio!)</div>
+<div class="example-body">
+<div class="reaction">Mg(OH)<sub>2</sub>(aq) + 2HNO<sub>3</sub>(aq) → 2H<sub>2</sub>O + Mg(NO<sub>3</sub>)<sub>2</sub>(aq)</div>
+<p><span class="given">50 mL of 0.020 M Mg(OH)<sub>2</sub></span> titrated with <span class="given">0.40 M HNO<sub>3</sub></span></p>
+<div class="calc">Mg(OH)<sub>2</sub> → Mg²⁺ + 2OH⁻ &nbsp;∴ [OH⁻] = 2 × 0.020 = 0.040 M<br>pOH = −log(0.040) = 1.40 → Initial pH = 14.00 − 1.40 = <span class="answer">12.60</span><br>V<sub>eq</sub> = 0.050 × 0.020 × (2/1) × (1/0.40) = <span class="answer">5 mL HNO<sub>3</sub></span><br>At equivalence: H<sub>2</sub>O + Mg(NO<sub>3</sub>)<sub>2</sub>, pH = <span class="answer">7</span></div>
+<p><strong>⚠️ Note the 2:1 ratio</strong> — need 2 mol HNO<sub>3</sub> per 1 mol Mg(OH)<sub>2</sub></p>
+</div>
+</div>
+
+<div class="quiz" id="q7">
+<h3>Quick Quiz</h3>
+<p>A titration curve starts at pH 2 and rises to pH 12 with equivalence at pH 7. What was in the flask?</p>
+<label><input type="radio" name="q7" value="a" onclick="checkQuiz('q7','a')"> Strong acid</label>
+<label><input type="radio" name="q7" value="b" onclick="checkQuiz('q7','a')"> Strong base</label>
+<label><input type="radio" name="q7" value="c" onclick="checkQuiz('q7','a')"> Weak acid</label>
+<div class="feedback"></div>
+</div>
+</div>
+</div>
+
+</div><!-- end content -->
+</main>
+
+<!-- CHAT WIDGET -->
+<div class="chat-widget">
+<button class="chat-btn" onclick="toggleChat()" title="Ask the Study Bot">💬</button>
+<div class="chat-panel" id="chatPanel">
+<div class="chat-header"><span>🧪 Stoichiometry Study Bot</span><button onclick="toggleChat()">✕</button></div>
+<div class="chat-messages" id="chatMsgs"><div class="chat-msg bot">Hi! I can help with stoichiometry questions. Try asking about mole ratios, percent yield, limiting reagent, titrations, or anything from Topics 1-7!</div></div>
+<div class="chat-input"><input id="chatIn" placeholder="Ask a question..." onkeydown="if(event.key==='Enter')sendChat()"><button onclick="sendChat()">➤</button></div>
+</div>
+</div>
+
+<script>
+function toggleDark(){document.body.dataset.theme=document.body.dataset.theme==='dark'?'':'dark'}
+function toggleTopic(el){el.parentElement.classList.toggle('open')}
+function expandAll(){document.querySelectorAll('.topic').forEach(t=>t.classList.add('open'))}
+function scrollTo2(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})}
+function toggleSolution(btn){const sol=btn.nextElementSibling;sol.classList.toggle('visible');btn.textContent=sol.classList.contains('visible')?'Hide Solution':'Show Solution'}
+function checkQuiz(qid,correct){const q=document.getElementById(qid);const sel=q.querySelector('input:checked');if(!sel)return;const fb=q.querySelector('.feedback');if(sel.value===correct){fb.className='feedback correct';fb.textContent='✓ Correct!'}else{fb.className='feedback wrong';fb.textContent='✗ Try again!'}}
+
+// Chatbot
+const kb=[
+{k:['mole ratio','mole conversion','topic 1'],a:'Mole ratio: use coefficients from balanced equation. n(target) = n(given) × (coeff target / coeff given). Always start with a balanced equation!'},
+{k:['mass to mass','mass-to-mass','stoichiometric process','topic 2'],a:'Mass-to-mass: convert mass → mol (÷M), apply mole ratio, convert mol → mass (×M). The bridge always goes through moles!'},
+{k:['percent yield','% yield','actual yield','theoretical yield','topic 3'],a:'% Yield = (actual yield / theoretical yield) × 100%. Theoretical yield comes from stoichiometry calculation. Actual yield comes from experiment. If >100%, something went wrong!'},
+{k:['limiting','excess','leftover','topic 4'],a:'Limiting reagent: calculate product from EACH reactant. The one giving LESS product is limiting. Leftover = total excess − amount used.'},
+{k:['molarity','concentration','dilution','topic 5'],a:'With solutions: n = c × V (moles = concentration × volume in L). Use this to enter or exit the mole ratio step.'},
+{k:['titration calc','titration problem','unknown concentration','topic 6'],a:'Titration: c(unknown) = V(known) × c(known) × ratio / V(unknown). Remember to convert mL to L!'},
+{k:['titration curve','equivalence point','endpoint','indicator','topic 7'],a:'Strong acid + strong base: equivalence at pH 7, steep vertical section. Acid→base curve rises; base→acid curve falls. Choose indicator that changes colour near equivalence point.'},
+{k:['balance','balancing'],a:'To balance: adjust coefficients so atoms of each element are equal on both sides. Start with most complex molecule. Never change subscripts!'},
+{k:['sig fig','significant','digits'],a:'Match your answer to the least number of sig figs in the given data. For multiplication/division, count sig figs.'},
+{k:['molar mass','molecular weight'],a:'Molar mass (M) = sum of atomic masses from periodic table, in g/mol. e.g., H₂O = 2(1.01) + 16.00 = 18.02 g/mol'},
+{k:['strong acid','strong base','weak acid','weak base'],a:'Strong acids (HCl, HNO₃, H₂SO₄) and strong bases (NaOH, KOH) fully dissociate. Weak ones only partially dissociate.'},
+{k:['precipitation','precipitate','ppt'],a:'A precipitation reaction forms an insoluble solid (precipitate). Use stoichiometry to find mass of precipitate from given reactant masses.'},
+{k:['error','source of error','uncertainty'],a:'Common sources of error: transfer losses, equipment limitations, incomplete reactions, impurities, and washing/dissolving precipitate.'},
+{k:['buret','burette','flask','equipment'],a:'Buret: delivers precise volumes of titrant. Erlenmeyer flask: holds analyte. Retort stand: holds buret. Indicator: shows endpoint.'},
+{k:['ph','poh','hydrogen'],a:'pH = -log[H⁺], pOH = -log[OH⁻], pH + pOH = 14. For strong acids, [H⁺] = concentration. For strong bases, calculate pOH first.'},
+{k:['neutralization','acid base','acid-base'],a:'Neutralization: acid + base → water + salt. The stoichiometric ratio depends on the specific acid and base (e.g., H₂SO₄ needs 2 mol NaOH).'},
+{k:['combustion','burn'],a:'Hydrocarbon combustion: CₓHᵧ + O₂ → CO₂ + H₂O. Balance C first, then H, then O last.'},
+{k:['stoichiometry','what is'],a:'Stoichiometry is the calculation of reactants and products in chemical reactions using mole ratios from balanced equations.'},
+{k:['help','topics','what can'],a:'I cover 7 topics: T1-Mole Ratios, T2-Mass-Mass, T3-% Yield, T4-Limiting Reagent, T5-Molarity, T6-Titration Calcs, T7-Titration Curves. Ask me anything!'},
+{k:['hello','hi','hey'],a:'Hey! Ready to study stoichiometry? Ask me about any topic from 1 to 7, or type a concept like "percent yield" or "limiting reagent".'}
+];
+function botReply(msg){const m=msg.toLowerCase();for(const e of kb){if(e.k.some(k=>m.includes(k)))return e.a}return "I'm not sure about that. Try asking about mole ratios, percent yield, limiting reagent, titrations, or titration curves!"}
+function sendChat(){const inp=document.getElementById('chatIn');const msg=inp.value.trim();if(!msg)return;const msgs=document.getElementById('chatMsgs');msgs.innerHTML+=`<div class="chat-msg user">${msg}</div>`;inp.value='';setTimeout(()=>{msgs.innerHTML+=`<div class="chat-msg bot">${botReply(msg)}</div>`;msgs.scrollTop=msgs.scrollHeight},300)}
+function toggleChat(){document.getElementById('chatPanel').classList.toggle('open')}
+</script>
+</body>
+</html>
