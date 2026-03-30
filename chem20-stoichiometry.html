@@ -104,6 +104,10 @@ sup{font-size:.78em;vertical-align:super}
 <!-- STUDY GUIDE CHECKLIST -->
 <div class="checklist" id="checklist">
 <h3>📋 Exam Study Checklist</h3>
+<div class="progress-bar-wrap" style="background:var(--border);border-radius:10px;height:22px;margin-bottom:12px;overflow:hidden;position:relative">
+<div id="progressBar" style="background:linear-gradient(90deg,#16a34a,#22d3ee);height:100%;width:0%;transition:width .5s;border-radius:10px"></div>
+<span id="progressText" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:.75em;font-weight:700;color:var(--text)">0 / 12 completed</span>
+</div>
 <label><input type="checkbox"> Mole calculations: molar mass, converting moles ↔ mass</label>
 <label><input type="checkbox"> Balancing equations</label>
 <label><input type="checkbox"> Applying mole ratios to find amounts of other substances</label>
@@ -520,7 +524,56 @@ sup{font-size:.78em;vertical-align:super}
 </div>
 
 <script>
-function toggleDark(){document.body.dataset.theme=document.body.dataset.theme==='dark'?'':'dark'}
+function toggleDark(){document.body.dataset.theme=document.body.dataset.theme==='dark'?'':'dark';localStorage.setItem('chem20-theme',document.body.dataset.theme)}
+
+// Progress tracking with localStorage
+function initChecklist(){
+  const boxes=document.querySelectorAll('.checklist input[type=checkbox]');
+  const saved=JSON.parse(localStorage.getItem('chem20-checklist')||'[]');
+  boxes.forEach((box,i)=>{
+    if(saved[i])box.checked=true;
+    box.addEventListener('change',()=>saveChecklist())
+  });
+  updateProgress()
+}
+function saveChecklist(){
+  const boxes=document.querySelectorAll('.checklist input[type=checkbox]');
+  const state=Array.from(boxes).map(b=>b.checked);
+  localStorage.setItem('chem20-checklist',JSON.stringify(state));
+  updateProgress()
+}
+function updateProgress(){
+  const boxes=document.querySelectorAll('.checklist input[type=checkbox]');
+  const total=boxes.length;
+  const done=Array.from(boxes).filter(b=>b.checked).length;
+  const pct=Math.round(done/total*100);
+  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('progressText').textContent=done+' / '+total+' completed';
+  if(done===total&&total>0){
+    document.getElementById('progressText').textContent='🎉 All done! You\'re ready for the exam!';
+    confetti()
+  }
+}
+function confetti(){
+  const c=document.createElement('div');
+  c.id='confetti-wrap';
+  c.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden';
+  document.body.appendChild(c);
+  const colors=['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#ff6bb5','#845ec2'];
+  for(let i=0;i<80;i++){
+    const p=document.createElement('div');
+    p.style.cssText='position:absolute;width:'+[8,10,12][i%3]+'px;height:'+[8,10,14][i%3]+'px;background:'+colors[i%colors.length]+';top:-20px;left:'+Math.random()*100+'%;border-radius:'+(i%2?'50%':'2px')+';animation:fall '+(2+Math.random()*2)+'s ease-out '+(Math.random()*.5)+'s forwards';
+    c.appendChild(p)
+  }
+  const style=document.createElement('style');
+  style.textContent='@keyframes fall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}';
+  document.head.appendChild(style);
+  setTimeout(()=>c.remove(),5000)
+}
+
+// Init on load
+if(localStorage.getItem('chem20-theme'))document.body.dataset.theme=localStorage.getItem('chem20-theme');
+document.addEventListener('DOMContentLoaded',initChecklist)
 function toggleTopic(el){el.parentElement.classList.toggle('open')}
 function expandAll(){document.querySelectorAll('.topic').forEach(t=>t.classList.add('open'))}
 function scrollTo2(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})}
