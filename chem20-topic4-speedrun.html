@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ 考前速通 — Topic 4: Limiting & Excess Reagents</title>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--accent:#f59e0b;--accent2:#8b5cf6;--success:#22c55e;--error:#ef4444;--border:#334155;--glow:rgba(245,158,11,.15)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:720px;margin:0 auto;padding:16px}
+
+/* Hero */
+.hero{text-align:center;padding:40px 20px 30px;background:linear-gradient(135deg,#1e293b,#0f172a);border-bottom:2px solid var(--accent)}
+.hero h1{font-size:1.8em;margin-bottom:4px}
+.hero .emoji{font-size:2.5em;display:block;margin-bottom:8px}
+.hero .subtitle{color:#94a3b8;font-size:.95em}
+.hero .time{display:inline-block;background:var(--accent);color:#000;padding:4px 14px;border-radius:20px;font-weight:700;font-size:.9em;margin-top:12px}
+
+/* Progress bar */
+.progress-bar{background:#334155;height:6px;border-radius:3px;margin:20px 0 10px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width .5s;border-radius:3px}
+.progress-label{text-align:center;font-size:.8em;color:#94a3b8;margin-bottom:20px}
+
+/* Sections */
+.section{background:var(--card);border-radius:12px;margin-bottom:16px;border:1px solid var(--border);overflow:hidden}
+.section-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.section-header:hover{background:rgba(245,158,11,.05)}
+.section-header h2{font-size:1.1em;display:flex;align-items:center;gap:8px}
+.section-header .num{background:var(--accent);color:#000;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85em;flex-shrink:0}
+.section-header .arrow{transition:transform .3s;font-size:1.2em}
+.section.open .arrow{transform:rotate(180deg)}
+.section-body{display:none;padding:0 20px 20px}
+.section.open .section-body{display:block}
+.section.done .section-header .num{background:var(--success)}
+.section.done .section-header h2{color:var(--success)}
+
+/* Content blocks */
+.key-point{background:rgba(245,158,11,.1);border-left:4px solid var(--accent);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+.key-point .label{color:var(--accent);font-weight:700;font-size:.85em;text-transform:uppercase;margin-bottom:4px}
+.formula-box{background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);padding:16px;border-radius:10px;text-align:center;font-size:1.2em;font-weight:700;margin:14px 0;letter-spacing:.3px}
+.memory-trick{background:rgba(34,197,94,.1);border-left:4px solid var(--success);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+.memory-trick .label{color:var(--success);font-weight:700;font-size:.85em;margin-bottom:4px}
+.warning{background:rgba(239,68,68,.1);border-left:4px solid var(--error);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+.warning .label{color:var(--error);font-weight:700;font-size:.85em;margin-bottom:4px}
+
+/* Steps */
+.steps{counter-reset:step;margin:12px 0}
+.step{counter-increment:step;padding:10px 14px 10px 48px;position:relative;margin:6px 0;background:rgba(255,255,255,.03);border-radius:8px}
+.step::before{content:counter(step);position:absolute;left:12px;top:10px;background:var(--accent2);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8em;font-weight:700}
+
+/* Example */
+.example{border:1px solid var(--border);border-radius:10px;margin:14px 0;overflow:hidden}
+.example-tag{background:var(--accent);color:#000;padding:8px 16px;font-weight:700;font-size:.9em}
+.example-body{padding:16px}
+.example-body .given{color:var(--accent);font-weight:600}
+.example-body .answer{color:var(--success);font-weight:700;font-size:1.05em}
+.example-body .highlight{background:rgba(245,158,11,.15);padding:2px 6px;border-radius:4px}
+.calc{font-family:'Courier New',monospace;background:rgba(255,255,255,.05);padding:10px 14px;border-radius:6px;margin:8px 0;font-size:.95em;line-height:1.8;overflow-x:auto}
+
+/* Quick check */
+.quick-check{border:2px solid var(--accent2);border-radius:10px;padding:16px;margin:14px 0}
+.quick-check h3{color:var(--accent2);margin-bottom:10px;font-size:1em}
+.quick-check label{display:block;padding:8px 12px;margin:4px 0;border-radius:8px;cursor:pointer;transition:background .2s}
+.quick-check label:hover{background:rgba(139,92,246,.1)}
+.quick-check input[type=radio]{margin-right:8px}
+.feedback{display:none;padding:10px 14px;border-radius:8px;margin-top:10px;font-weight:600}
+.feedback.correct{display:block;background:rgba(34,197,94,.15);color:var(--success)}
+.feedback.wrong{display:block;background:rgba(239,68,68,.15);color:var(--error)}
+
+/* Practice */
+.practice-box{border:2px dashed var(--accent);border-radius:10px;padding:16px;margin:14px 0}
+.practice-box h3{color:var(--accent);margin-bottom:8px}
+.show-answer{background:var(--accent2);color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.9em;margin-top:10px}
+.show-answer:hover{opacity:.85}
+.answer-reveal{display:none;margin-top:12px;padding:14px;background:rgba(34,197,94,.1);border-radius:8px;border-left:3px solid var(--success)}
+.answer-reveal.visible{display:block}
+
+/* Done button */
+.done-btn{display:block;width:100%;padding:12px;background:var(--accent2);color:#fff;border:none;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer;margin-top:14px;transition:all .2s}
+.done-btn:hover{opacity:.85;transform:scale(1.01)}
+.done-btn.completed{background:var(--success)}
+
+/* Footer */
+.footer{text-align:center;padding:30px 20px;color:#475569;font-size:.85em}
+.footer a{color:var(--accent);text-decoration:none}
+
+/* Confetti */
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;overflow:hidden}
+.confetti-piece{position:absolute;width:10px;height:10px;top:-20px;animation:confetti-fall 3s ease-out forwards}
+@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+
+/* Responsive */
+@media(max-width:600px){.hero h1{font-size:1.4em}.formula-box{font-size:1em}.container{padding:10px}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="emoji">⚡</span>
+  <h1>Topic 4: Limiting & Excess Reagents</h1>
+  <div class="subtitle">Chem 20 Stoichiometry — 考前速通</div>
+  <div class="time">⏱️ ~10 min</div>
+</div>
+
+<div class="container">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0 / 5 完成</div>
+
+  <!-- ===== SECTION 1: Core Concept ===== -->
+  <div class="section open" id="s1">
+    <div class="section-header" onclick="toggleSection('s1')">
+      <h2><span class="num">1</span> 核心概念 — 30秒搞定</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-point">
+        <div class="label">🔑 一句话概念</div>
+        两个反应物混在一起，谁先用完谁就是 <strong>Limiting Reagent (LR)</strong>。<br>
+        没用完的那个叫 <strong>Excess Reagent</strong>，会有剩余。
+      </div>
+
+      <div class="memory-trick">
+        <div class="label">🧠 记忆法 — Hot Dog 类比</div>
+        12个香肠 + 8个面包 → 只能做8个热狗<br>
+        <strong>面包先用完 = Limiting Reagent</strong><br>
+        剩4个香肠 = Excess Reagent leftover<br>
+        8个热狗 = Theoretical Yield
+      </div>
+
+      <div class="formula-box">
+        Limiting Reagent → 产出最少product的那个反应物
+      </div>
+
+      <button class="done-btn" onclick="markDone('s1')">✓ 懂了，下一个</button>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: The Method ===== -->
+  <div class="section" id="s2">
+    <div class="section-header" onclick="toggleSection('s2')">
+      <h2><span class="num">2</span> 解题步骤 — 考试就按这个写</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-point">
+        <div class="label">📋 4步法（考试必写）</div>
+      </div>
+
+      <div class="steps">
+        <div class="step"><strong>Balance</strong> the equation + calculate <strong>Molar Masses</strong></div>
+        <div class="step">Convert <strong>both</strong> reactants to <strong>moles</strong><br>n = m / M</div>
+        <div class="step"><strong>Scenario Test:</strong> 假设A是LR → 算需要多少B → 够不够？<br>假设B是LR → 算需要多少A → 够不够？<br><strong>谁不够 = 谁是LR</strong></div>
+        <div class="step">用 <strong>LR的moles</strong> 算product的质量<br>m = n × mole ratio × M</div>
+      </div>
+
+      <div class="warning">
+        <div class="label">⚠️ 最常考的坑</div>
+        <strong>永远从LR开始算product！</strong> 如果用Excess Reagent算，答案一定错。<br><br>
+        要算leftover？<br>
+        leftover = total excess moles − moles used by LR
+      </div>
+
+      <button class="done-btn" onclick="markDone('s2')">✓ 懂了，下一个</button>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: Must-Know Example ===== -->
+  <div class="section" id="s3">
+    <div class="section-header" onclick="toggleSection('s3')">
+      <h2><span class="num">3</span> 必考题型 — 完整解题演示</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="example">
+        <div class="example-tag">📝 经典题: 10.0 g Cu + 20.0 g AgNO₃ → Ag = ?</div>
+        <div class="example-body">
+          <p class="given">Given: 10.0 g Cu, 20.0 g AgNO₃</p>
+          <p style="margin:8px 0"><strong>Balanced equation:</strong></p>
+          <div class="formula-box" style="font-size:1.05em">Cu(s) + 2 AgNO₃(aq) → 2 Ag(s) + Cu(NO₃)₂(aq)</div>
+
+          <p style="margin:8px 0"><strong>Step 1: Molar Masses</strong></p>
+          <div class="calc">
+M(Cu) = 63.55 g/mol<br>
+M(AgNO₃) = 107.87 + 14.01 + 3(16.00) = 169.88 g/mol<br>
+M(Ag) = 107.87 g/mol
+          </div>
+
+          <p style="margin:8px 0"><strong>Step 2: Convert to moles</strong></p>
+          <div class="calc">
+n(Cu) = 10.0 / 63.55 = 0.1574 mol<br>
+n(AgNO₃) = 20.0 / 169.88 = 0.1177 mol
+          </div>
+
+          <p style="margin:8px 0"><strong>Step 3: Scenario Test</strong></p>
+          <div class="calc">
+<span class="highlight">Scenario A: Cu is LR?</span><br>
+Need: 0.1574 mol Cu × (2 mol AgNO₃ / 1 mol Cu) = 0.3148 mol AgNO₃<br>
+Have: 0.1177 mol ← <span style="color:var(--error)">NOT ENOUGH! ✗</span><br><br>
+<span class="highlight">Scenario B: AgNO₃ is LR?</span><br>
+Need: 0.1177 mol AgNO₃ × (1 mol Cu / 2 mol AgNO₃) = 0.0589 mol Cu<br>
+Have: 0.1574 mol ← <span style="color:var(--success)">ENOUGH ✓</span>
+          </div>
+
+          <p style="margin:8px 0"><strong>∴ AgNO₃ is Limiting, Cu is Excess</strong></p>
+
+          <p style="margin:8px 0"><strong>Step 4: Calculate product from LR</strong></p>
+          <div class="calc">
+m(Ag) = 0.1177 mol AgNO₃ × (2 mol Ag / 2 mol AgNO₃) × 107.87 g/mol<br>
+m(Ag) = <span class="answer">12.7 g</span> (3 sig digs)
+          </div>
+
+          <p style="margin:8px 0"><strong>Bonus: Leftover Cu</strong></p>
+          <div class="calc">
+n(Cu used) = 0.1177 × (1/2) = 0.0589 mol<br>
+n(Cu leftover) = 0.1574 − 0.0589 = 0.0986 mol<br>
+m(Cu leftover) = 0.0986 × 63.55 = <span class="answer">6.26 g</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="done-btn" onclick="markDone('s3')">✓ 看完了，下一个</button>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: Quick Check ===== -->
+  <div class="section" id="s4">
+    <div class="section-header" onclick="toggleSection('s4')">
+      <h2><span class="num">4</span> 快速自测 — 3道题检验</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <!-- Q1 -->
+      <div class="quick-check" id="q1">
+        <h3>Q1: 2.20 mol Mg + 3.30 mol HCl<br>Mg(s) + 2 HCl(aq) → MgCl₂(aq) + H₂(g)<br>Which is limiting?</h3>
+        <label><input type="radio" name="q1" value="a" onclick="checkQ('q1','b')"> A. Mg</label>
+        <label><input type="radio" name="q1" value="b" onclick="checkQ('q1','b')"> B. HCl</label>
+        <div class="feedback" id="q1-correct">✅ Correct! HCl is limiting. Need 2.20×2 = 4.40 mol HCl but only have 3.30.</div>
+        <div class="feedback" id="q1-wrong">❌ Try again. Calculate: if Mg is LR, how much HCl do you need?</div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quick-check" id="q2">
+        <h3>Q2: Which reagent do you use to calculate theoretical yield?</h3>
+        <label><input type="radio" name="q2" value="a" onclick="checkQ('q2','a')"> A. Limiting Reagent</label>
+        <label><input type="radio" name="q2" value="b" onclick="checkQ('q2','a')"> B. Excess Reagent</label>
+        <label><input type="radio" name="q2" value="c" onclick="checkQ('q2','a')"> C. Either one</label>
+        <div class="feedback" id="q2-correct">✅ Correct! Always calculate product from the Limiting Reagent.</div>
+        <div class="feedback" id="q2-wrong">❌ Nope — using excess reagent gives the WRONG answer. Always use LR!</div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quick-check" id="q3">
+        <h3>Q3: 10.0 mol CH₄ + 10.0 mol O₂<br>CH₄ + 2O₂ → CO₂ + 2H₂O<br>How much CO₂ (mol) is produced?</h3>
+        <label><input type="radio" name="q3" value="a" onclick="checkQ('q3','b')"> A. 10.0 mol</label>
+        <label><input type="radio" name="q3" value="b" onclick="checkQ('q3','b')"> B. 5.0 mol</label>
+        <label><input type="radio" name="q3" value="c" onclick="checkQ('q3','b')"> C. 20.0 mol</label>
+        <div class="feedback" id="q3-correct">✅ Correct! O₂ is limiting (need 20 mol for 10 mol CH₄, only have 10). From LR: 10.0 mol O₂ × (1 CO₂ / 2 O₂) = 5.0 mol CO₂</div>
+        <div class="feedback" id="q3-wrong">❌ O₂ is limiting! 10 mol O₂ × (1 mol CO₂ / 2 mol O₂) = 5.0 mol</div>
+      </div>
+
+      <button class="done-btn" onclick="markDone('s4')">✓ 做完了，下一个</button>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: Practice ===== -->
+  <div class="section" id="s5">
+    <div class="section-header" onclick="toggleSection('s5')">
+      <h2><span class="num">5</span> 考前练一道 — 限时挑战</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="practice-box">
+        <h3>🎯 Challenge: 3 NH₄NO₃ + Na₃PO₄ → (NH₄)₃PO₄ + 3 NaNO₃</h3>
+        <p>Starting with <strong>30.0 g ammonium nitrate</strong> and <strong>50.0 g sodium phosphate</strong>:</p>
+        <p>a) Which reagent is limiting?</p>
+        <p>b) What is the maximum mass of (NH₄)₃PO₄?</p>
+        <p>c) How much excess reagent is left over?</p>
+        <button class="show-answer" onclick="this.nextElementSibling.classList.toggle('visible')">Show Full Solution</button>
+        <div class="answer-reveal">
+          <strong>Molar Masses:</strong><br>
+          M(NH₄NO₃) = 80.06 g/mol<br>
+          M(Na₃PO₄) = 163.94 g/mol<br>
+          M((NH₄)₃PO₄) = 149.12 g/mol<br><br>
+
+          <strong>Moles:</strong><br>
+          n(NH₄NO₃) = 30.0 / 80.06 = 0.3747 mol<br>
+          n(Na₃PO₄) = 50.0 / 163.94 = 0.3050 mol<br><br>
+
+          <strong>Scenario Test:</strong><br>
+          If NH₄NO₃ is LR: need 0.3747 × (1/3) = 0.1249 mol Na₃PO₄ ← have 0.3050 ✓<br>
+          If Na₃PO₄ is LR: need 0.3050 × 3 = 0.9149 mol NH₄NO₃ ← have 0.3747 ✗<br><br>
+
+          <strong>∴ <span style="color:var(--accent)">NH₄NO₃ is LIMITING</span></strong><br><br>
+
+          <strong>b) Max product:</strong><br>
+          m = 0.3747 × (1/3) × 149.12 = <strong style="color:var(--success)">18.6 g (NH₄)₃PO₄</strong><br><br>
+
+          <strong>c) Excess leftover:</strong><br>
+          n(Na₃PO₄ used) = 0.3747 × (1/3) = 0.1249 mol<br>
+          n(leftover) = 0.3050 − 0.1249 = 0.1801 mol<br>
+          m(leftover) = 0.1801 × 163.94 = <strong style="color:var(--success)">29.5 g Na₃PO₄</strong>
+        </div>
+      </div>
+
+      <div class="practice-box" style="margin-top:16px">
+        <h3>🎯 Bonus: With Percent Yield</h3>
+        <p><strong>35 g C₆H₁₀ + 45 g O₂</strong></p>
+        <p>2 C₆H₁₀ + 17 O₂ → 12 CO₂ + 10 H₂O</p>
+        <p>a) How many grams of CO₂ formed?</p>
+        <p>b) Which is limiting?</p>
+        <p>c) If actual CO₂ = 35 g, what is % yield?</p>
+        <button class="show-answer" onclick="this.nextElementSibling.classList.toggle('visible')">Show Full Solution</button>
+        <div class="answer-reveal">
+          M(C₆H₁₀) = 82.16 g/mol | M(O₂) = 32.00 g/mol | M(CO₂) = 44.01 g/mol<br><br>
+          n(C₆H₁₀) = 35 / 82.16 = 0.4261 mol<br>
+          n(O₂) = 45 / 32.00 = 1.406 mol<br><br>
+          If C₆H₁₀ is LR: need 0.4261 × (17/2) = 3.622 mol O₂ ← only have 1.406 ✗<br>
+          If O₂ is LR: need 1.406 × (2/17) = 0.1654 mol C₆H₁₀ ← have 0.4261 ✓<br><br>
+          <strong>∴ O₂ is LIMITING</strong><br><br>
+          m(CO₂) = 1.406 × (12/17) × 44.01 = <strong style="color:var(--success)">43.7 g</strong><br><br>
+          % yield = (35 / 43.7) × 100% = <strong style="color:var(--success)">80.1%</strong>
+        </div>
+      </div>
+
+      <button class="done-btn" onclick="markDone('s5')">✓ 全部完成！</button>
+    </div>
+  </div>
+
+  <!-- Cheat Sheet -->
+  <div style="background:var(--card);border:2px solid var(--accent);border-radius:12px;padding:20px;margin:20px 0">
+    <h2 style="color:var(--accent);margin-bottom:12px;text-align:center">📋 Topic 4 考前小抄</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="background:rgba(245,158,11,.1);padding:12px;border-radius:8px">
+        <strong style="color:var(--accent)">Limiting Reagent</strong><br>
+        完全被消耗<br>
+        产出较少product<br>
+        用它算theoretical yield
+      </div>
+      <div style="background:rgba(139,92,246,.1);padding:12px;border-radius:8px">
+        <strong style="color:var(--accent2)">Excess Reagent</strong><br>
+        有剩余<br>
+        leftover = total − used<br>
+        不用它算product
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:14px;padding:12px;background:rgba(34,197,94,.1);border-radius:8px">
+      <strong style="color:var(--success)">解题口诀：</strong><br>
+      两个都算moles → 假设谁是LR → 谁不够谁是LR → 从LR算product
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>LearnAlberta — Built by Cecily Zhao</p>
+    <p><a href="chem20-stoichiometry.html">← 回到完整 Stoichiometry 页面</a></p>
+  </div>
+</div>
+
+<div class="confetti-container" id="confetti"></div>
+
+<script>
+const sections=['s1','s2','s3','s4','s5'];
+const done=new Set(JSON.parse(localStorage.getItem('t4speedrun')||'[]'));
+
+function init(){
+  done.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.classList.add('done');el.classList.remove('open');}
+  });
+  if(done.size>0&&done.size<5){
+    // Open next undone section
+    for(const s of sections){
+      if(!done.has(s)){document.getElementById(s).classList.add('open');break;}
+    }
+  }
+  updateProgress();
+}
+
+function toggleSection(id){
+  document.getElementById(id).classList.toggle('open');
+}
+
+function markDone(id){
+  done.add(id);
+  localStorage.setItem('t4speedrun',JSON.stringify([...done]));
+  const el=document.getElementById(id);
+  el.classList.add('done');
+  el.classList.remove('open');
+  // Open next
+  for(const s of sections){
+    if(!done.has(s)){document.getElementById(s).classList.add('open');break;}
+  }
+  updateProgress();
+  if(done.size===5)celebrate();
+}
+
+function updateProgress(){
+  const pct=(done.size/5)*100;
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressLabel').textContent=done.size+' / 5 完成'+(done.size===5?' 🎉':'');
+}
+
+function checkQ(qid,correct){
+  const selected=document.querySelector('input[name="'+qid+'"]:checked');
+  if(!selected)return;
+  const isCorrect=selected.value===correct;
+  document.getElementById(qid+'-correct').style.display=isCorrect?'block':'none';
+  document.getElementById(qid+'-wrong').style.display=isCorrect?'none':'block';
+}
+
+function celebrate(){
+  const container=document.getElementById('confetti');
+  const colors=['#f59e0b','#8b5cf6','#22c55e','#ef4444','#3b82f6','#ec4899'];
+  for(let i=0;i<80;i++){
+    const piece=document.createElement('div');
+    piece.className='confetti-piece';
+    piece.style.left=Math.random()*100+'%';
+    piece.style.background=colors[Math.floor(Math.random()*colors.length)];
+    piece.style.animationDelay=Math.random()*2+'s';
+    piece.style.borderRadius=Math.random()>.5?'50%':'0';
+    piece.style.width=(6+Math.random()*8)+'px';
+    piece.style.height=piece.style.width;
+    container.appendChild(piece);
+  }
+  setTimeout(()=>container.innerHTML='',4000);
+}
+
+init();
+</script>
+</body>
+</html>
