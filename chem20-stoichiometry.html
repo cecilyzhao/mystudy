@@ -2430,12 +2430,16 @@ function openSubSection(topicEl,subEl,menu){
 }
 function openTopic(id){
   document.body.classList.add('topic-view');
-  document.querySelectorAll('.topic').forEach(t=>t.classList.remove('open'));
+  // Hide ALL topics first
+  document.querySelectorAll('.topic').forEach(t=>{t.classList.remove('open');t.style.display='none';});
+  // Also hide checklist
+  const cl=document.getElementById('checklist');if(cl)cl.style.display='none';
+  // Show only the selected topic
   const topic=document.getElementById(id);
   if(topic){
+    topic.style.display='';
     topic.classList.add('open');
     buildTopicMenu(topic);
-    // Reset: show menu, hide all sub-sections
     const menu=topic.querySelector('.topic-menu');if(menu)menu.style.display='';
     topic.querySelectorAll('.sub-section').forEach(s=>{s.style.display='none';s.classList.remove('open');});
     topic.querySelectorAll('.sub-back').forEach(b=>b.remove());
@@ -2444,6 +2448,9 @@ function openTopic(id){
 }
 function backToDashboard(){
   document.body.classList.remove('topic-view');
+  // Show all topics and checklist again
+  document.querySelectorAll('.topic').forEach(t=>{t.style.display='';t.classList.remove('open');});
+  const cl=document.getElementById('checklist');if(cl)cl.style.display='';
   window.scrollTo({top:0,behavior:'smooth'});
 }
 // Check URL hash for direct topic link
