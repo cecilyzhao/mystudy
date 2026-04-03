@@ -141,17 +141,20 @@ hr.section-divider{border:none;border-top:2px dashed var(--border);margin:20px 0
 
 /* Dashboard grid */
 .dashboard{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;padding:20px;max-width:1200px;margin:0 auto}
-.dash-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;border-top:4px solid var(--card-color,var(--accent))}
-.dash-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.15);border-color:var(--card-color,var(--accent))}
-.dash-card .card-num{position:absolute;top:16px;right:20px;font-size:2.5em;font-weight:800;opacity:.1;color:var(--card-color,var(--accent))}
-.dash-card h3{color:var(--card-color,var(--accent));font-size:1.1em;margin-bottom:6px}
-.dash-card[data-color="blue"]{--card-color:#2563eb}
-.dash-card[data-color="purple"]{--card-color:#7c3aed}
-.dash-card[data-color="amber"]{--card-color:#d97706}
-.dash-card[data-color="emerald"]{--card-color:#059669}
-.dash-card[data-color="cyan"]{--card-color:#0891b2}
-.dash-card[data-color="rose"]{--card-color:#e11d48}
-.dash-card[data-color="orange"]{--card-color:#ea580c}
+.dash-card{background:var(--card);border:none;border-radius:16px;padding:0;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.dash-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.18)}
+.dash-card .card-icon{height:100px;display:flex;align-items:center;justify-content:center;font-size:3em;background:var(--card-bg);position:relative}
+.dash-card .card-icon::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--card-color)}
+.dash-card .card-num{position:absolute;top:8px;right:14px;font-size:2em;font-weight:800;opacity:.15;color:#fff}
+.dash-card .card-info{padding:16px 18px}
+.dash-card h3{color:var(--card-color);font-size:1.05em;margin-bottom:5px}
+.dash-card[data-color="blue"]{--card-color:#2563eb;--card-bg:linear-gradient(135deg,#1e3a5f,#2563eb)}
+.dash-card[data-color="purple"]{--card-color:#7c3aed;--card-bg:linear-gradient(135deg,#3b1764,#7c3aed)}
+.dash-card[data-color="amber"]{--card-color:#d97706;--card-bg:linear-gradient(135deg,#78350f,#d97706)}
+.dash-card[data-color="emerald"]{--card-color:#059669;--card-bg:linear-gradient(135deg,#064e3b,#059669)}
+.dash-card[data-color="cyan"]{--card-color:#0891b2;--card-bg:linear-gradient(135deg,#164e63,#0891b2)}
+.dash-card[data-color="rose"]{--card-color:#e11d48;--card-bg:linear-gradient(135deg,#4c0519,#e11d48)}
+.dash-card[data-color="orange"]{--card-color:#ea580c;--card-bg:linear-gradient(135deg,#7c2d12,#ea580c)}
 .dash-card p{color:#94a3b8;font-size:.88em;line-height:1.5}
 .dash-card .card-footer{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
 .dash-card .tag{font-size:.75em;padding:3px 10px;border-radius:12px;background:var(--formula-bg);color:var(--accent);font-weight:600}
@@ -183,46 +186,32 @@ body.topic-view .nav-wrap{display:none}
 <!-- DASHBOARD VIEW -->
 <div class="dashboard" id="dashboard">
   <div class="dash-card" data-color="blue" onclick="openTopic('t1')">
-    <span class="card-num">1</span>
-    <h3>📐 Topic 1: Mole Ratios</h3>
-    <p>Balanced equations, mole ratios, converting between moles of different substances</p>
-    <div class="card-footer"><span class="tag">Concept Notes</span><span class="tag">Practice</span><span class="tag speed">⚡ Speed Review</span></div>
+    <div class="card-icon"><span class="card-num">1</span>📐</div>
+    <div class="card-info"><h3>Mole Ratios</h3><p>Balanced equations, mole ratios, converting between moles of different substances</p></div>
   </div>
   <div class="dash-card" data-color="purple" onclick="openTopic('t2')">
-    <span class="card-num">2</span>
-    <h3>⚖️ Topic 2: Gravimetric Stoichiometry</h3>
-    <p>Mass → moles → mole ratio → moles → mass. The full stoichiometric process.</p>
-    <div class="card-footer"><span class="tag">Concept Notes</span><span class="tag">Practice</span><span class="tag speed">⚡ Speed Review</span></div>
+    <div class="card-icon"><span class="card-num">2</span>⚖️</div>
+    <div class="card-info"><h3>Gravimetric Stoichiometry</h3><p>Mass → moles → mole ratio → moles → mass</p></div>
   </div>
   <div class="dash-card" data-color="amber" onclick="openTopic('t3')">
-    <span class="card-num">3</span>
-    <h3>📊 Topic 3: Percent Yield</h3>
-    <p>Theoretical vs actual yield, experimental uncertainties, % yield calculations</p>
-    <div class="card-footer"><span class="tag">Concept Notes</span><span class="tag">Practice</span><span class="tag speed">⚡ Speed Review</span></div>
+    <div class="card-icon"><span class="card-num">3</span>📊</div>
+    <div class="card-info"><h3>Percent Yield</h3><p>Theoretical vs actual yield, % yield calculations</p></div>
   </div>
   <div class="dash-card" data-color="emerald" onclick="openTopic('t4')">
-    <span class="card-num">4</span>
-    <h3>🧪 Topic 4: Limiting & Excess Reagents</h3>
-    <p>Identify limiting reagent, calculate theoretical yield and excess leftover</p>
-    <div class="card-footer"><span class="tag">Concept Notes</span><span class="tag">Practice</span><span class="tag speed">⚡ Speed Review</span></div>
+    <div class="card-icon"><span class="card-num">4</span>🧪</div>
+    <div class="card-info"><h3>Limiting & Excess Reagents</h3><p>Identify LR, calculate theoretical yield and excess leftover</p></div>
   </div>
   <div class="dash-card" data-color="cyan" onclick="openTopic('t5')">
-    <span class="card-num">5</span>
-    <h3>💧 Topic 5: Solution Stoichiometry</h3>
-    <p>Molarity, dilution, stoichiometry with solutions (c = n/V)</p>
-    <div class="card-footer"><span class="tag">Concept Notes</span><span class="tag">Practice</span><span class="tag speed">⚡ Speed Review</span></div>
+    <div class="card-icon"><span class="card-num">5</span>💧</div>
+    <div class="card-info"><h3>Solution Stoichiometry</h3><p>Molarity, dilution, stoichiometry with solutions (c = n/V)</p></div>
   </div>
   <div class="dash-card" data-color="rose" onclick="openTopic('t6')">
-    <span class="card-num">6</span>
-    <h3>🔬 Topic 6: Titration Analysis</h3>
-    <p>Titration process, pH/pOH calculations, multiple trials, equivalence point</p>
-    <div class="card-footer"><span class="tag">Concept Notes</span><span class="tag">Practice</span><span class="tag speed">⚡ Speed Review</span></div>
+    <div class="card-icon"><span class="card-num">6</span>🔬</div>
+    <div class="card-info"><h3>Titration Analysis</h3><p>pH/pOH calculations, multiple trials, equivalence point</p></div>
   </div>
   <div class="dash-card" data-color="orange" onclick="openTopic('t7')">
-    <span class="card-num">7</span>
-    <h3>📈 Topic 7: Titration Curves & Indicators</h3>
-    <p>S-shaped curves, strong/weak acid-base, choosing indicators</p>
-    <div class="card-footer"><span class="tag">Concept Notes</span><span class="tag">Practice</span><span class="tag speed">⚡ Speed Review</span></div>
+    <div class="card-icon"><span class="card-num">7</span>📈</div>
+    <div class="card-info"><h3>Titration Curves & Indicators</h3><p>S-shaped curves, strong/weak acid-base, choosing indicators</p></div>
   </div>
 </div>
 
