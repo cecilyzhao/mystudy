@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ Speed Review — Topic 5: Solution Stoichiometry</title>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--accent:#f59e0b;--accent2:#8b5cf6;--success:#22c55e;--error:#ef4444;--border:#334155;--glow:rgba(245,158,11,.15)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:720px;margin:0 auto;padding:16px}
+.hero{text-align:center;padding:40px 20px 30px;background:linear-gradient(135deg,#1e293b,#0f172a);border-bottom:2px solid var(--accent)}
+.hero h1{font-size:1.8em;margin-bottom:4px}
+.hero .emoji{font-size:2.5em;display:block;margin-bottom:8px}
+.hero .subtitle{color:#94a3b8;font-size:.95em}
+.hero .time{display:inline-block;background:var(--accent);color:#000;padding:4px 14px;border-radius:20px;font-weight:700;font-size:.9em;margin-top:12px}
+.progress-bar{background:#334155;height:6px;border-radius:3px;margin:20px 0 10px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width .5s;border-radius:3px}
+.progress-label{text-align:center;font-size:.8em;color:#94a3b8;margin-bottom:20px}
+.section{background:var(--card);border-radius:12px;margin-bottom:16px;border:1px solid var(--border);overflow:hidden}
+.section-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.section-header:hover{background:rgba(245,158,11,.05)}
+.section-header h2{font-size:1.1em;display:flex;align-items:center;gap:8px}
+.section-header .num{background:var(--accent);color:#000;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85em;flex-shrink:0}
+.section-header .arrow{transition:transform .3s;font-size:1.2em}
+.section.open .arrow{transform:rotate(180deg)}
+.section-body{display:none;padding:0 20px 20px}
+.section.open .section-body{display:block}
+.section.done .section-header .num{background:var(--success)}
+.section.done .section-header h2{color:var(--success)}
+.key-point{background:rgba(245,158,11,.1);border-left:4px solid var(--accent);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+.key-point .label{color:var(--accent);font-weight:700;font-size:.85em;text-transform:uppercase;margin-bottom:4px}
+.formula-box{background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);padding:16px;border-radius:10px;text-align:center;font-size:1.2em;font-weight:700;margin:14px 0;letter-spacing:.3px}
+.memory-trick{background:rgba(34,197,94,.1);border-left:4px solid var(--success);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+.memory-trick .label{color:var(--success);font-weight:700;font-size:.85em;margin-bottom:4px}
+.warning{background:rgba(239,68,68,.1);border-left:4px solid var(--error);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+.warning .label{color:var(--error);font-weight:700;font-size:.85em;margin-bottom:4px}
+.steps{counter-reset:step;margin:12px 0}
+.step{counter-increment:step;padding:10px 14px 10px 48px;position:relative;margin:6px 0;background:rgba(255,255,255,.03);border-radius:8px}
+.step::before{content:counter(step);position:absolute;left:12px;top:10px;background:var(--accent2);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8em;font-weight:700}
+.example{border:1px solid var(--border);border-radius:10px;margin:14px 0;overflow:hidden}
+.example-tag{background:var(--accent);color:#000;padding:8px 16px;font-weight:700;font-size:.9em}
+.example-body{padding:16px}
+.example-body .given{color:var(--accent);font-weight:600}
+.example-body .answer{color:var(--success);font-weight:700;font-size:1.05em}
+.example-body .highlight{background:rgba(245,158,11,.15);padding:2px 6px;border-radius:4px}
+.calc{font-family:'Segoe UI',system-ui,sans-serif;background:rgba(255,255,255,.05);padding:10px 14px;border-radius:6px;margin:8px 0;font-size:.95em;line-height:1.8;overflow-x:auto}
+.quick-check{border:2px solid var(--accent2);border-radius:10px;padding:16px;margin:14px 0}
+.quick-check h3{color:var(--accent2);margin-bottom:10px;font-size:1em}
+.quick-check label{display:block;padding:8px 12px;margin:4px 0;border-radius:8px;cursor:pointer;transition:background .2s}
+.quick-check label:hover{background:rgba(139,92,246,.1)}
+.quick-check input[type=radio]{margin-right:8px}
+.feedback{display:none;padding:10px 14px;border-radius:8px;margin-top:10px;font-weight:600}
+.feedback.correct{display:block;background:rgba(34,197,94,.15);color:var(--success)}
+.feedback.wrong{display:block;background:rgba(239,68,68,.15);color:var(--error)}
+.practice-box{border:2px dashed var(--accent);border-radius:10px;padding:16px;margin:14px 0}
+.practice-box h3{color:var(--accent);margin-bottom:8px}
+.show-answer{background:var(--accent2);color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.9em;margin-top:10px}
+.show-answer:hover{opacity:.85}
+.answer-reveal{display:none;margin-top:12px;padding:14px;background:rgba(34,197,94,.1);border-radius:8px;border-left:3px solid var(--success)}
+.answer-reveal.visible{display:block}
+.done-btn{display:block;width:100%;padding:12px;background:var(--accent2);color:#fff;border:none;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer;margin-top:14px;transition:all .2s}
+.done-btn:hover{opacity:.85;transform:scale(1.01)}
+.done-btn.completed{background:var(--success)}
+.footer{text-align:center;padding:30px 20px;color:#475569;font-size:.85em}
+.footer a{color:var(--accent);text-decoration:none}
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;overflow:hidden}
+.confetti-piece{position:absolute;width:10px;height:10px;top:-20px;animation:confetti-fall 3s ease-out forwards}
+@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+@media(max-width:600px){.hero h1{font-size:1.4em}.formula-box{font-size:1em}.container{padding:10px}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="emoji">⚡</span>
+  <h1>Topic 5: Solution Stoichiometry</h1>
+  <div class="subtitle">Chem 20 Stoichiometry — Exam Speed Review</div>
+  <div class="time">⏱️ ~10 min</div>
+</div>
+
+<div class="container">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0 / 5 complete</div>
+
+  <!-- ===== SECTION 1: Core Concept ===== -->
+  <div class="section open" id="s1">
+    <div class="section-header" onclick="toggleSection('s1')">
+      <h2><span class="num">1</span> Core Concept — 30 Seconds</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-point">
+        <div class="label">🔑 One-Line Summary</div>
+        <strong>Solution stoichiometry</strong> applies stoichiometric calculations to substances <strong>in solution</strong>, using <strong>molarity</strong> (c = n/V) to convert between volume and moles.
+      </div>
+
+      <div class="formula-box">
+        c = n / V &nbsp;&nbsp;→&nbsp;&nbsp; n = c × V &nbsp;&nbsp;→&nbsp;&nbsp; V = n / c
+      </div>
+
+      <div class="memory-trick">
+        <div class="label">🧠 Key Vocabulary</div>
+        <strong>Solvent:</strong> dissolves the other substance (usually larger quantity)<br>
+        <strong>Solute:</strong> dissolves in the solvent (usually smaller quantity)<br>
+        <strong>Molarity (c or M):</strong> moles of solute per litre of solution (mol/L)
+      </div>
+
+      <div class="formula-box" style="font-size:1em">
+        Vol A → (× c<sub>A</sub>) → Mol A → (× mole ratio) → Mol B → (÷ c<sub>B</sub>) → Vol B
+      </div>
+
+      <button class="done-btn" onclick="markDone('s1')">✓ Got it, next</button>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: The Method ===== -->
+  <div class="section" id="s2">
+    <div class="section-header" onclick="toggleSection('s2')">
+      <h2><span class="num">2</span> Problem-Solving Steps</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-point">
+        <div class="label">📋 Steps for Solution Stoichiometry</div>
+      </div>
+
+      <div class="steps">
+        <div class="step"><strong>Write and balance</strong> the chemical equation</div>
+        <div class="step">Calculate <strong>moles of given</strong> substance: n = c × V<br>(Make sure volume is in <strong>litres</strong>!)</div>
+        <div class="step">Use the <strong>mole ratio</strong> to find moles of required substance</div>
+        <div class="step">Convert to the <strong>required quantity</strong>:<br>
+          • Volume: V = n / c<br>
+          • Concentration: c = n / V<br>
+          • Mass: m = n × M</div>
+      </div>
+
+      <div class="warning">
+        <div class="label">⚠️ Most Common Mistake</div>
+        <strong>Convert mL to L before calculating!</strong><br>
+        1 mL = 0.001 L → multiply mL by 0.001 or divide by 1000<br>
+        Also: 1 kL = 1000 L
+      </div>
+
+      <div class="key-point">
+        <div class="label">📌 Typical Chem 20 Reactions</div>
+        • <strong>Precipitation</strong> reactions (insoluble product forms)<br>
+        • <strong>Acid-base neutralization</strong> reactions
+      </div>
+
+      <button class="done-btn" onclick="markDone('s2')">✓ Got it, next</button>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: Must-Know Example ===== -->
+  <div class="section" id="s3">
+    <div class="section-header" onclick="toggleSection('s3')">
+      <h2><span class="num">3</span> Must-Know Problem — Full Worked Example</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="example">
+        <div class="example-tag">📝 H₂SO₄ Concentration from KOH Titration</div>
+        <div class="example-body">
+          <p class="given">Given: 10.00 mL H₂SO₄ is neutralized by 15.9 mL of 0.150 mol/L KOH. Find [H₂SO₄].</p>
+          <p style="margin:8px 0"><strong>Balanced equation:</strong></p>
+          <div class="formula-box" style="font-size:1.05em">H₂SO₄(aq) + 2 KOH(aq) → 2 H₂O(ℓ) + K₂SO₄(aq)</div>
+
+          <p style="margin:8px 0"><strong>Convert mL → L:</strong></p>
+          <div class="calc">
+V<sub>H₂SO₄</sub> = 0.01000 L | V<sub>KOH</sub> = 0.0159 L
+          </div>
+
+          <p style="margin:8px 0"><strong>One-line calculation:</strong></p>
+          <div class="calc">
+[H₂SO₄] = V<sub>KOH</sub> × c<sub>KOH</sub> × (mole ratio) / V<sub>H₂SO₄</sub><br><br>
+[H₂SO₄] = 0.0159 L × (0.150 mol/L) × (1 mol H₂SO₄ / 2 mol KOH) / 0.01000 L<br>
+[H₂SO₄] = <span class="answer">0.119 mol/L</span> (3 sig digs)
+          </div>
+        </div>
+      </div>
+
+      <div class="example">
+        <div class="example-tag">📝 Ammonia + Phosphoric Acid Volume</div>
+        <div class="example-body">
+          <p class="given">Given: What volume of 14.8 mol/L NH₃ reacts with 1.00 kL of 12.9 mol/L H₃PO₄?</p>
+          <div class="formula-box" style="font-size:1.05em">NH₃(aq) + H₃PO₄(aq) → NH₄H₂PO₄(s)</div>
+          <div class="calc">
+V<sub>NH₃</sub> = 1.00 × 10³ L × (12.9 mol/L) × (1 mol NH₃ / 1 mol H₃PO₄) × (L / 14.8 mol)<br>
+V<sub>NH₃</sub> = <span class="answer">872 L = 0.872 kL</span> (3 sig digs)
+          </div>
+        </div>
+      </div>
+
+      <button class="done-btn" onclick="markDone('s3')">✓ Got it, next</button>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: Quick Check ===== -->
+  <div class="section" id="s4">
+    <div class="section-header" onclick="toggleSection('s4')">
+      <h2><span class="num">4</span> Quick Check — 3 Questions</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <!-- Q1 -->
+      <div class="quick-check" id="q1">
+        <h3>Q1: To convert volume of solution to moles of solute, you multiply by:</h3>
+        <label><input type="radio" name="q1" value="a" onclick="checkQ('q1','a')"> A. Molarity (c)</label>
+        <label><input type="radio" name="q1" value="b" onclick="checkQ('q1','a')"> B. Molar mass (M)</label>
+        <label><input type="radio" name="q1" value="c" onclick="checkQ('q1','a')"> C. Avogadro's number</label>
+        <div class="feedback" id="q1-correct">✅ Correct! n = c × V → volume × molarity = moles</div>
+        <div class="feedback" id="q1-wrong">❌ n = c × V. Multiply volume (in L) by molarity (mol/L) to get moles.</div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quick-check" id="q2">
+        <h3>Q2: 50.0 mL of 0.500 mol/L HCl contains how many moles?</h3>
+        <label><input type="radio" name="q2" value="a" onclick="checkQ('q2','b')"> A. 25.0 mol</label>
+        <label><input type="radio" name="q2" value="b" onclick="checkQ('q2','b')"> B. 0.0250 mol</label>
+        <label><input type="radio" name="q2" value="c" onclick="checkQ('q2','b')"> C. 0.250 mol</label>
+        <div class="feedback" id="q2-correct">✅ Correct! n = 0.0500 L × 0.500 mol/L = 0.0250 mol</div>
+        <div class="feedback" id="q2-wrong">❌ Convert mL to L first! n = 0.0500 L × 0.500 mol/L = 0.0250 mol</div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quick-check" id="q3">
+        <h3>Q3: H₂SO₄ + 2 KOH → K₂SO₄ + 2 H₂O<br>Why is the mole ratio important here?</h3>
+        <label><input type="radio" name="q3" value="a" onclick="checkQ('q3','b')"> A. It determines the colour change</label>
+        <label><input type="radio" name="q3" value="b" onclick="checkQ('q3','b')"> B. 1 mol H₂SO₄ reacts with 2 mol KOH — you need the ratio to convert correctly</label>
+        <label><input type="radio" name="q3" value="c" onclick="checkQ('q3','b')"> C. It's always 1:1</label>
+        <div class="feedback" id="q3-correct">✅ Correct! Without the correct mole ratio (1:2), your calculation will be wrong by a factor of 2.</div>
+        <div class="feedback" id="q3-wrong">❌ The ratio is 1:2 (not 1:1). Always check the balanced equation for the correct ratio!</div>
+      </div>
+
+      <button class="done-btn" onclick="markDone('s4')">✓ Done, next</button>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: Practice ===== -->
+  <div class="section" id="s5">
+    <div class="section-header" onclick="toggleSection('s5')">
+      <h2><span class="num">5</span> Practice Problem — Challenge Yourself</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="practice-box">
+        <h3>🎯 Challenge: Ammonium Sulfate Fertilizer</h3>
+        <p><strong>H₂SO₄(aq) + 2 NH₃(aq) → (NH₄)₂SO₄(aq)</strong></p>
+        <p>50.0 mL of H₂SO₄ reacts with 24.4 mL of 2.20 mol/L NH₃. Calculate [H₂SO₄].</p>
+        <button class="show-answer" onclick="this.nextElementSibling.classList.toggle('visible')">Show Full Solution</button>
+        <div class="answer-reveal">
+          <strong>Calculation:</strong><br>
+          [H₂SO₄] = V<sub>NH₃</sub> × c<sub>NH₃</sub> × (mole ratio) / V<sub>H₂SO₄</sub><br><br>
+          [H₂SO₄] = 0.0244 L × (2.20 mol/L) × (1 mol H₂SO₄ / 2 mol NH₃) / 0.0500 L<br>
+          [H₂SO₄] = <strong style="color:var(--success)">0.537 mol/L</strong> (3 sig digs)
+        </div>
+      </div>
+
+      <div class="practice-box" style="margin-top:16px">
+        <h3>🎯 Bonus: Slaked Lime + Aluminum Sulfate</h3>
+        <p><strong>3 Ca(OH)₂(aq) + Al₂(SO₄)₃(aq) → 2 Al(OH)₃(s) + 3 CaSO₄(s)</strong></p>
+        <p>What volume of 0.0250 mol/L Ca(OH)₂ is needed to react with 25.0 mL of 0.125 mol/L Al₂(SO₄)₃?</p>
+        <button class="show-answer" onclick="this.nextElementSibling.classList.toggle('visible')">Show Full Solution</button>
+        <div class="answer-reveal">
+          V<sub>Ca(OH)₂</sub> = V<sub>Al₂(SO₄)₃</sub> × c<sub>Al₂(SO₄)₃</sub> × (mole ratio) / c<sub>Ca(OH)₂</sub><br><br>
+          V = 0.0250 L × (0.125 mol/L) × (3 mol Ca(OH)₂ / 1 mol Al₂(SO₄)₃) / (0.0250 mol/L)<br>
+          V = 0.375 L = <strong style="color:var(--success)">375 mL</strong> (3 sig digs)
+        </div>
+      </div>
+
+      <button class="done-btn" onclick="markDone('s5')">✓ All done!</button>
+    </div>
+  </div>
+
+  <!-- Cheat Sheet -->
+  <div style="background:var(--card);border:2px solid var(--accent);border-radius:12px;padding:20px;margin:20px 0">
+    <h2 style="color:var(--accent);margin-bottom:12px;text-align:center">📋 Topic 5 Cheat Sheet</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="background:rgba(245,158,11,.1);padding:12px;border-radius:8px">
+        <strong style="color:var(--accent)">Key Formulas</strong><br>
+        c = n / V (molarity)<br>
+        n = c × V (moles from solution)<br>
+        V = n / c (volume needed)
+      </div>
+      <div style="background:rgba(139,92,246,.1);padding:12px;border-radius:8px">
+        <strong style="color:var(--accent2)">The Flow</strong><br>
+        Vol A → (×c) → Mol A<br>
+        → (ratio) → Mol B<br>
+        → (÷c or ×M) → Vol B or Mass B
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:14px;padding:12px;background:rgba(34,197,94,.1);border-radius:8px">
+      <strong style="color:var(--success)">Remember:</strong><br>
+      Always convert mL → L before calculating! (÷ 1000)
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>LearnAlberta — Built by Cecily Zhao</p>
+    <p><a href="chem20-stoichiometry.html">← Back to Full Stoichiometry Page</a></p>
+  </div>
+</div>
+
+<div class="confetti-container" id="confetti"></div>
+
+<script>
+const sections=['s1','s2','s3','s4','s5'];
+const done=new Set(JSON.parse(localStorage.getItem('t5speedrun')||'[]'));
+
+function init(){
+  done.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.classList.add('done');el.classList.remove('open');}
+  });
+  if(done.size>0&&done.size<5){
+    for(const s of sections){
+      if(!done.has(s)){document.getElementById(s).classList.add('open');break;}
+    }
+  }
+  updateProgress();
+}
+
+function toggleSection(id){
+  document.getElementById(id).classList.toggle('open');
+}
+
+function markDone(id){
+  done.add(id);
+  localStorage.setItem('t5speedrun',JSON.stringify([...done]));
+  const el=document.getElementById(id);
+  el.classList.add('done');
+  el.classList.remove('open');
+  for(const s of sections){
+    if(!done.has(s)){document.getElementById(s).classList.add('open');break;}
+  }
+  updateProgress();
+  if(done.size===5)celebrate();
+}
+
+function updateProgress(){
+  const pct=(done.size/5)*100;
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressLabel').textContent=done.size+' / 5 complete'+(done.size===5?' 🎉':'');
+}
+
+function checkQ(qid,correct){
+  const selected=document.querySelector('input[name="'+qid+'"]:checked');
+  if(!selected)return;
+  const isCorrect=selected.value===correct;
+  document.getElementById(qid+'-correct').style.display=isCorrect?'block':'none';
+  document.getElementById(qid+'-wrong').style.display=isCorrect?'none':'block';
+}
+
+function celebrate(){
+  const container=document.getElementById('confetti');
+  const colors=['#f59e0b','#8b5cf6','#22c55e','#ef4444','#3b82f6','#ec4899'];
+  for(let i=0;i<80;i++){
+    const piece=document.createElement('div');
+    piece.className='confetti-piece';
+    piece.style.left=Math.random()*100+'%';
+    piece.style.background=colors[Math.floor(Math.random()*colors.length)];
+    piece.style.animationDelay=Math.random()*2+'s';
+    piece.style.borderRadius=Math.random()>.5?'50%':'0';
+    piece.style.width=(6+Math.random()*8)+'px';
+    piece.style.height=piece.style.width;
+    container.appendChild(piece);
+  }
+  setTimeout(()=>container.innerHTML='',4000);
+}
+
+init();
+</script>
+</body>
+</html>

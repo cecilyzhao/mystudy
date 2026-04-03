@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ Speed Review — Topic 3: Percent Yield</title>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--accent:#f59e0b;--accent2:#8b5cf6;--success:#22c55e;--error:#ef4444;--border:#334155;--glow:rgba(245,158,11,.15)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
+.container{max-width:720px;margin:0 auto;padding:16px}
+.hero{text-align:center;padding:40px 20px 30px;background:linear-gradient(135deg,#1e293b,#0f172a);border-bottom:2px solid var(--accent)}
+.hero h1{font-size:1.8em;margin-bottom:4px}
+.hero .emoji{font-size:2.5em;display:block;margin-bottom:8px}
+.hero .subtitle{color:#94a3b8;font-size:.95em}
+.hero .time{display:inline-block;background:var(--accent);color:#000;padding:4px 14px;border-radius:20px;font-weight:700;font-size:.9em;margin-top:12px}
+.progress-bar{background:#334155;height:6px;border-radius:3px;margin:20px 0 10px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width .5s;border-radius:3px}
+.progress-label{text-align:center;font-size:.8em;color:#94a3b8;margin-bottom:20px}
+.section{background:var(--card);border-radius:12px;margin-bottom:16px;border:1px solid var(--border);overflow:hidden}
+.section-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.section-header:hover{background:rgba(245,158,11,.05)}
+.section-header h2{font-size:1.1em;display:flex;align-items:center;gap:8px}
+.section-header .num{background:var(--accent);color:#000;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85em;flex-shrink:0}
+.section-header .arrow{transition:transform .3s;font-size:1.2em}
+.section.open .arrow{transform:rotate(180deg)}
+.section-body{display:none;padding:0 20px 20px}
+.section.open .section-body{display:block}
+.section.done .section-header .num{background:var(--success)}
+.section.done .section-header h2{color:var(--success)}
+.key-point{background:rgba(245,158,11,.1);border-left:4px solid var(--accent);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+.key-point .label{color:var(--accent);font-weight:700;font-size:.85em;text-transform:uppercase;margin-bottom:4px}
+.formula-box{background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);padding:16px;border-radius:10px;text-align:center;font-size:1.2em;font-weight:700;margin:14px 0;letter-spacing:.3px}
+.memory-trick{background:rgba(34,197,94,.1);border-left:4px solid var(--success);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+.memory-trick .label{color:var(--success);font-weight:700;font-size:.85em;margin-bottom:4px}
+.warning{background:rgba(239,68,68,.1);border-left:4px solid var(--error);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+.warning .label{color:var(--error);font-weight:700;font-size:.85em;margin-bottom:4px}
+.steps{counter-reset:step;margin:12px 0}
+.step{counter-increment:step;padding:10px 14px 10px 48px;position:relative;margin:6px 0;background:rgba(255,255,255,.03);border-radius:8px}
+.step::before{content:counter(step);position:absolute;left:12px;top:10px;background:var(--accent2);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8em;font-weight:700}
+.example{border:1px solid var(--border);border-radius:10px;margin:14px 0;overflow:hidden}
+.example-tag{background:var(--accent);color:#000;padding:8px 16px;font-weight:700;font-size:.9em}
+.example-body{padding:16px}
+.example-body .given{color:var(--accent);font-weight:600}
+.example-body .answer{color:var(--success);font-weight:700;font-size:1.05em}
+.example-body .highlight{background:rgba(245,158,11,.15);padding:2px 6px;border-radius:4px}
+.calc{font-family:'Segoe UI',system-ui,sans-serif;background:rgba(255,255,255,.05);padding:10px 14px;border-radius:6px;margin:8px 0;font-size:.95em;line-height:1.8;overflow-x:auto}
+.quick-check{border:2px solid var(--accent2);border-radius:10px;padding:16px;margin:14px 0}
+.quick-check h3{color:var(--accent2);margin-bottom:10px;font-size:1em}
+.quick-check label{display:block;padding:8px 12px;margin:4px 0;border-radius:8px;cursor:pointer;transition:background .2s}
+.quick-check label:hover{background:rgba(139,92,246,.1)}
+.quick-check input[type=radio]{margin-right:8px}
+.feedback{display:none;padding:10px 14px;border-radius:8px;margin-top:10px;font-weight:600}
+.feedback.correct{display:block;background:rgba(34,197,94,.15);color:var(--success)}
+.feedback.wrong{display:block;background:rgba(239,68,68,.15);color:var(--error)}
+.practice-box{border:2px dashed var(--accent);border-radius:10px;padding:16px;margin:14px 0}
+.practice-box h3{color:var(--accent);margin-bottom:8px}
+.show-answer{background:var(--accent2);color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.9em;margin-top:10px}
+.show-answer:hover{opacity:.85}
+.answer-reveal{display:none;margin-top:12px;padding:14px;background:rgba(34,197,94,.1);border-radius:8px;border-left:3px solid var(--success)}
+.answer-reveal.visible{display:block}
+.done-btn{display:block;width:100%;padding:12px;background:var(--accent2);color:#fff;border:none;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer;margin-top:14px;transition:all .2s}
+.done-btn:hover{opacity:.85;transform:scale(1.01)}
+.done-btn.completed{background:var(--success)}
+.footer{text-align:center;padding:30px 20px;color:#475569;font-size:.85em}
+.footer a{color:var(--accent);text-decoration:none}
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;overflow:hidden}
+.confetti-piece{position:absolute;width:10px;height:10px;top:-20px;animation:confetti-fall 3s ease-out forwards}
+@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+@media(max-width:600px){.hero h1{font-size:1.4em}.formula-box{font-size:1em}.container{padding:10px}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="emoji">⚡</span>
+  <h1>Topic 3: Percent Yield</h1>
+  <div class="subtitle">Chem 20 Stoichiometry — Exam Speed Review</div>
+  <div class="time">⏱️ ~10 min</div>
+</div>
+
+<div class="container">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0 / 5 complete</div>
+
+  <!-- ===== SECTION 1: Core Concept ===== -->
+  <div class="section open" id="s1">
+    <div class="section-header" onclick="toggleSection('s1')">
+      <h2><span class="num">1</span> Core Concept — 30 Seconds</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-point">
+        <div class="label">🔑 One-Line Summary</div>
+        <strong>Percent yield</strong> compares the <strong>actual yield</strong> (from lab) to the <strong>theoretical yield</strong> (from stoichiometry) to evaluate how well a reaction performed.
+      </div>
+
+      <div class="formula-box">
+        % yield = (actual yield / theoretical yield) × 100%
+      </div>
+
+      <div class="memory-trick">
+        <div class="label">🧠 Where Do the Values Come From?</div>
+        <strong>Actual yield</strong> = measured in the <strong>lab</strong> (experimental data)<br>
+        <strong>Theoretical yield</strong> = calculated from <strong>stoichiometry</strong> (the math)<br>
+        For school labs, 5–10% total uncertainty is typical; ≥90% yield is often acceptable.
+      </div>
+
+      <div class="key-point">
+        <div class="label">📌 Applications</div>
+        • Test experimental designs and technological skills<br>
+        • Evaluate purity of chemicals<br>
+        • Assess the quantitative nature of a reaction
+      </div>
+
+      <button class="done-btn" onclick="markDone('s1')">✓ Got it, next</button>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: The Method ===== -->
+  <div class="section" id="s2">
+    <div class="section-header" onclick="toggleSection('s2')">
+      <h2><span class="num">2</span> Steps &amp; Experimental Uncertainties</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="key-point">
+        <div class="label">📋 Steps for Percent Yield Problems</div>
+      </div>
+
+      <div class="steps">
+        <div class="step">Calculate the <strong>theoretical yield</strong> using gravimetric stoichiometry<br>(mass → mol → ratio → mol → mass)</div>
+        <div class="step">Identify the <strong>actual yield</strong> from the lab data</div>
+        <div class="step">Apply the formula: <strong>% yield = (actual / theoretical) × 100%</strong></div>
+      </div>
+
+      <div class="warning">
+        <div class="label">⚠️ Common Sources of Experimental Uncertainty</div>
+        • All <strong>equipment</strong> has inherent limitations<br>
+        • Initial values <strong>derived</strong> from measurements<br>
+        • <strong>Purity</strong> of the grade of chemical used<br>
+        • <strong>Washing</strong> a precipitate can lose fine particles<br>
+        • Qualitative <strong>judgements</strong> (e.g., estimation of colour changes)
+      </div>
+
+      <div class="memory-trick">
+        <div class="label">🧠 Reverse Problem</div>
+        If given % yield and theoretical yield, find actual yield:<br>
+        <strong>m<sub>actual</sub> = (% yield × m<sub>theoretical</sub>) / 100%</strong>
+      </div>
+
+      <button class="done-btn" onclick="markDone('s2')">✓ Got it, next</button>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: Must-Know Example ===== -->
+  <div class="section" id="s3">
+    <div class="section-header" onclick="toggleSection('s3')">
+      <h2><span class="num">3</span> Must-Know Problem — Full Worked Example</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="example">
+        <div class="example-tag">📝 Silver Chromate Precipitation: 3.00 g AgNO₃ → 2.81 g precipitate</div>
+        <div class="example-body">
+          <p class="given">Given: 3.00 g AgNO₃ + excess Na₂CrO₄ → 2.81 g precipitate. Calculate % yield.</p>
+          <p style="margin:8px 0"><strong>Balanced equation:</strong></p>
+          <div class="formula-box" style="font-size:1.05em">2 AgNO₃(aq) + Na₂CrO₄(aq) → 2 NaNO₃(aq) + Ag₂CrO₄(s)</div>
+
+          <p style="margin:8px 0"><strong>Step 1: Theoretical yield (stoichiometry)</strong></p>
+          <div class="calc">
+M(AgNO₃) = 169.88 g/mol | M(Ag₂CrO₄) = 331.74 g/mol<br><br>
+m<sub>theor</sub> = 3.00 g × (mol / 169.88 g) × (1 mol Ag₂CrO₄ / 2 mol AgNO₃) × (331.74 g/mol)<br>
+m<sub>theor</sub> = 2.93 g
+          </div>
+
+          <p style="margin:8px 0"><strong>Step 2: Actual yield = 2.81 g (from lab)</strong></p>
+
+          <p style="margin:8px 0"><strong>Step 3: Percent yield</strong></p>
+          <div class="calc">
+% yield = (2.81 / 2.93) × 100%<br>
+% yield = <span class="answer">95.9%</span> (3 sig digs)
+          </div>
+
+          <p style="margin:4px 0;font-size:.9em;color:#94a3b8">★ Use the unrounded theoretical value in the % yield calculation</p>
+        </div>
+      </div>
+
+      <button class="done-btn" onclick="markDone('s3')">✓ Got it, next</button>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: Quick Check ===== -->
+  <div class="section" id="s4">
+    <div class="section-header" onclick="toggleSection('s4')">
+      <h2><span class="num">4</span> Quick Check — 3 Questions</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <!-- Q1 -->
+      <div class="quick-check" id="q1">
+        <h3>Q1: Where does the "actual yield" value come from?</h3>
+        <label><input type="radio" name="q1" value="a" onclick="checkQ('q1','b')"> A. From the balanced equation</label>
+        <label><input type="radio" name="q1" value="b" onclick="checkQ('q1','b')"> B. From laboratory measurements</label>
+        <label><input type="radio" name="q1" value="c" onclick="checkQ('q1','b')"> C. From the periodic table</label>
+        <div class="feedback" id="q1-correct">✅ Correct! Actual yield is measured experimentally in the lab.</div>
+        <div class="feedback" id="q1-wrong">❌ Actual = lab measurement. Theoretical = stoichiometry calculation.</div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quick-check" id="q2">
+        <h3>Q2: Theoretical yield = 6.11 g, actual yield = 5.81 g. What is the % yield?</h3>
+        <label><input type="radio" name="q2" value="a" onclick="checkQ('q2','b')"> A. 105%</label>
+        <label><input type="radio" name="q2" value="b" onclick="checkQ('q2','b')"> B. 95.1%</label>
+        <label><input type="radio" name="q2" value="c" onclick="checkQ('q2','b')"> C. 5.16%</label>
+        <div class="feedback" id="q2-correct">✅ Correct! (5.81 / 6.11) × 100% = 95.1%</div>
+        <div class="feedback" id="q2-wrong">❌ % yield = (5.81 / 6.11) × 100% = 95.1%</div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quick-check" id="q3">
+        <h3>Q3: If percent yield is greater than 100%, this most likely means:</h3>
+        <label><input type="radio" name="q3" value="a" onclick="checkQ('q3','a')"> A. Experimental error (e.g., impurities, incomplete drying)</label>
+        <label><input type="radio" name="q3" value="b" onclick="checkQ('q3','a')"> B. The reaction is better than perfect</label>
+        <label><input type="radio" name="q3" value="c" onclick="checkQ('q3','a')"> C. The balanced equation is wrong</label>
+        <div class="feedback" id="q3-correct">✅ Correct! >100% yield indicates experimental error — product may contain impurities or water.</div>
+        <div class="feedback" id="q3-wrong">❌ Yields above 100% indicate experimental error, not a super-efficient reaction!</div>
+      </div>
+
+      <button class="done-btn" onclick="markDone('s4')">✓ Done, next</button>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: Practice ===== -->
+  <div class="section" id="s5">
+    <div class="section-header" onclick="toggleSection('s5')">
+      <h2><span class="num">5</span> Practice Problem — Challenge Yourself</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="practice-box">
+        <h3>🎯 Challenge: Strontium Sulfate Precipitation</h3>
+        <p><strong>Sr(NO₃)₂(aq) + CuSO₄(aq) → SrSO₄(s) + Cu(NO₃)₂(aq)</strong></p>
+        <p>1.84 g of strontium nitrate produces 1.50 g of strontium sulfate. Calculate the % yield.</p>
+        <button class="show-answer" onclick="this.nextElementSibling.classList.toggle('visible')">Show Full Solution</button>
+        <div class="answer-reveal">
+          <strong>Molar Masses:</strong><br>
+          M(Sr(NO₃)₂) = 211.64 g/mol | M(SrSO₄) = 183.69 g/mol<br><br>
+
+          <strong>Theoretical yield:</strong><br>
+          m<sub>theor</sub> = 1.84 g × (mol / 211.64 g) × (1/1) × (183.69 g/mol) = 1.60 g<br><br>
+
+          <strong>% yield:</strong><br>
+          % yield = (1.50 / 1.60) × 100% = <strong style="color:var(--success)">93.9%</strong> (3 sig digs)
+        </div>
+      </div>
+
+      <div class="practice-box" style="margin-top:16px">
+        <h3>🎯 Bonus: Copper(II) Hydroxide (Reverse Problem)</h3>
+        <p><strong>2 KOH(aq) + Cu(NO₃)₂(aq) → Cu(OH)₂(s) + 2 KNO₃(aq)</strong></p>
+        <p>2.67 g of KOH reacts with excess Cu(NO₃)₂. If the percent yield is 75.4%, what is the actual mass of Cu(OH)₂ produced?</p>
+        <button class="show-answer" onclick="this.nextElementSibling.classList.toggle('visible')">Show Full Solution</button>
+        <div class="answer-reveal">
+          M(KOH) = 56.11 g/mol | M(Cu(OH)₂) = 97.57 g/mol<br><br>
+          <strong>Theoretical yield:</strong><br>
+          m<sub>theor</sub> = 2.67 g × (mol / 56.11 g) × (1 mol Cu(OH)₂ / 2 mol KOH) × (97.57 g/mol) = 2.32 g<br><br>
+          <strong>Actual yield:</strong><br>
+          m<sub>actual</sub> = (75.4% × 2.32 g) / 100% = <strong style="color:var(--success)">1.75 g</strong> (3 sig digs)
+        </div>
+      </div>
+
+      <button class="done-btn" onclick="markDone('s5')">✓ All done!</button>
+    </div>
+  </div>
+
+  <!-- Cheat Sheet -->
+  <div style="background:var(--card);border:2px solid var(--accent);border-radius:12px;padding:20px;margin:20px 0">
+    <h2 style="color:var(--accent);margin-bottom:12px;text-align:center">📋 Topic 3 Cheat Sheet</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="background:rgba(245,158,11,.1);padding:12px;border-radius:8px">
+        <strong style="color:var(--accent)">The Formula</strong><br>
+        % yield = (actual / theoretical) × 100%<br>
+        Actual → from lab<br>
+        Theoretical → from stoichiometry
+      </div>
+      <div style="background:rgba(139,92,246,.1);padding:12px;border-radius:8px">
+        <strong style="color:var(--accent2)">Uncertainty Sources</strong><br>
+        Equipment limitations<br>
+        Chemical purity<br>
+        Washing precipitate losses<br>
+        Judgement calls (colour changes)
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:14px;padding:12px;background:rgba(34,197,94,.1);border-radius:8px">
+      <strong style="color:var(--success)">Reverse Formula:</strong><br>
+      m<sub>actual</sub> = (% yield × m<sub>theoretical</sub>) / 100%
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>LearnAlberta — Built by Cecily Zhao</p>
+    <p><a href="chem20-stoichiometry.html">← Back to Full Stoichiometry Page</a></p>
+  </div>
+</div>
+
+<div class="confetti-container" id="confetti"></div>
+
+<script>
+const sections=['s1','s2','s3','s4','s5'];
+const done=new Set(JSON.parse(localStorage.getItem('t3speedrun')||'[]'));
+
+function init(){
+  done.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.classList.add('done');el.classList.remove('open');}
+  });
+  if(done.size>0&&done.size<5){
+    for(const s of sections){
+      if(!done.has(s)){document.getElementById(s).classList.add('open');break;}
+    }
+  }
+  updateProgress();
+}
+
+function toggleSection(id){
+  document.getElementById(id).classList.toggle('open');
+}
+
+function markDone(id){
+  done.add(id);
+  localStorage.setItem('t3speedrun',JSON.stringify([...done]));
+  const el=document.getElementById(id);
+  el.classList.add('done');
+  el.classList.remove('open');
+  for(const s of sections){
+    if(!done.has(s)){document.getElementById(s).classList.add('open');break;}
+  }
+  updateProgress();
+  if(done.size===5)celebrate();
+}
+
+function updateProgress(){
+  const pct=(done.size/5)*100;
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressLabel').textContent=done.size+' / 5 complete'+(done.size===5?' 🎉':'');
+}
+
+function checkQ(qid,correct){
+  const selected=document.querySelector('input[name="'+qid+'"]:checked');
+  if(!selected)return;
+  const isCorrect=selected.value===correct;
+  document.getElementById(qid+'-correct').style.display=isCorrect?'block':'none';
+  document.getElementById(qid+'-wrong').style.display=isCorrect?'none':'block';
+}
+
+function celebrate(){
+  const container=document.getElementById('confetti');
+  const colors=['#f59e0b','#8b5cf6','#22c55e','#ef4444','#3b82f6','#ec4899'];
+  for(let i=0;i<80;i++){
+    const piece=document.createElement('div');
+    piece.className='confetti-piece';
+    piece.style.left=Math.random()*100+'%';
+    piece.style.background=colors[Math.floor(Math.random()*colors.length)];
+    piece.style.animationDelay=Math.random()*2+'s';
+    piece.style.borderRadius=Math.random()>.5?'50%':'0';
+    piece.style.width=(6+Math.random()*8)+'px';
+    piece.style.height=piece.style.width;
+    container.appendChild(piece);
+  }
+  setTimeout(()=>container.innerHTML='',4000);
+}
+
+init();
+</script>
+</body>
+</html>
