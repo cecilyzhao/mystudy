@@ -2431,7 +2431,8 @@ function openSubSection(topicEl,subEl,menu){
   backBtn.textContent='← Topics';
   backBtn.onclick=function(){
     subs.forEach(s=>{s.style.display='none';s.classList.remove('open');const h=s.querySelector('.sub-header');if(h)h.style.display='';});
-    nav.remove();menu.style.display='';
+    body.querySelectorAll('.sub-nav').forEach(n=>n.remove());
+    menu.style.display='';
     topicEl.scrollIntoView({behavior:'smooth',block:'start'});
   };
   nav.appendChild(backBtn);
@@ -2445,8 +2446,10 @@ function openSubSection(topicEl,subEl,menu){
       subs.forEach(ss=>{ss.style.display='none';ss.classList.remove('open');const h=ss.querySelector('.sub-header');if(h)h.style.display='none';});
       s.style.display='';s.classList.add('open');
       const h2=s.querySelector('.sub-header');if(h2)h2.style.display='none';
-      nav.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
+      // Sync active state on both navs
+      body.querySelectorAll('.sub-nav button').forEach(b=>b.classList.remove('active'));
+      const idx=Array.from(nav.querySelectorAll('button')).indexOf(btn);
+      body.querySelectorAll('.sub-nav').forEach(n=>{const btns=n.querySelectorAll('button');if(btns[idx])btns[idx].classList.add('active');});
       s.scrollIntoView({behavior:'smooth',block:'start'});
     };
     nav.appendChild(btn);
@@ -2457,10 +2460,19 @@ function openSubSection(topicEl,subEl,menu){
   speedTab.textContent='⚡ Speed Review';
   speedTab.onclick=function(){window.location.href='chem20-topic'+topicNum+'-speedrun.html';};
   nav.appendChild(speedTab);
-  // Insert nav and show selected section
+  // Remove old bottom nav if exists
+  body.querySelectorAll('.sub-nav-bottom').forEach(n=>n.remove());
+  // Insert top nav and show selected section
   body.insertBefore(nav,subs[0]||body.firstChild);
   subEl.style.display='';subEl.classList.add('open');
   const hdr=subEl.querySelector('.sub-header');if(hdr)hdr.style.display='none';
+  // Clone nav for bottom
+  const navBottom=nav.cloneNode(true);navBottom.className='sub-nav sub-nav-bottom';
+  navBottom.querySelectorAll('button').forEach((btn,i)=>{
+    const origBtns=nav.querySelectorAll('button');
+    btn.onclick=function(){origBtns[i].click();};
+  });
+  body.appendChild(navBottom);
   subEl.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function openTopic(id){
