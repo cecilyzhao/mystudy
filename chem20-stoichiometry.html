@@ -125,7 +125,25 @@ sup{font-size:.78em;vertical-align:super}
 .info-list{margin:8px 0 8px 20px}
 .info-list li{margin:4px 0}
 hr.section-divider{border:none;border-top:2px dashed var(--border);margin:20px 0}
-@media(max-width:768px){main{padding:10px}header h1{font-size:1.1em}.chat-panel{width:calc(100% - 40px);right:20px;bottom:80px}.fib-input{min-width:80px;max-width:160px}}
+/* Dashboard grid */
+.dashboard{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;padding:20px;max-width:1200px;margin:0 auto}
+.dash-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.dash-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.15);border-color:var(--accent)}
+.dash-card .card-num{position:absolute;top:16px;right:20px;font-size:2.5em;font-weight:800;opacity:.08;color:var(--accent)}
+.dash-card h3{color:var(--accent);font-size:1.1em;margin-bottom:6px}
+.dash-card p{color:#94a3b8;font-size:.88em;line-height:1.5}
+.dash-card .card-footer{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.dash-card .tag{font-size:.75em;padding:3px 10px;border-radius:12px;background:var(--formula-bg);color:var(--accent);font-weight:600}
+.dash-card .tag.speed{background:rgba(245,158,11,.15);color:#f59e0b}
+.dash-back{display:none;padding:10px 20px;max-width:1200px;margin:0 auto}
+.dash-back button{background:var(--accent);color:#fff;border:none;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:.9em}
+.dash-back button:hover{opacity:.85}
+#contentArea{display:none}
+body.topic-view #contentArea{display:block}
+body.topic-view .dashboard{display:none}
+body.topic-view .dash-back{display:block}
+body.topic-view .nav-wrap{display:none}
+@media(max-width:768px){main{padding:10px}header h1{font-size:1.1em}.chat-panel{width:calc(100% - 40px);right:20px;bottom:80px}.fib-input{min-width:80px;max-width:160px}.dashboard{padding:12px;gap:12px}.dash-card{padding:18px}}
 </style>
 </head>
 <body>
@@ -150,6 +168,60 @@ hr.section-divider{border:none;border-top:2px dashed var(--border);margin:20px 0
 <button onclick="scrollTo2('t7')">📌 T7<br>Titration Curves</button>
 </nav>
 </div>
+
+<!-- DASHBOARD VIEW -->
+<div class="dashboard" id="dashboard">
+  <div class="dash-card" onclick="openTopic('t1')">
+    <span class="card-num">1</span>
+    <h3>📐 Topic 1: Mole Ratios</h3>
+    <p>Balanced equations, mole ratios, converting between moles of different substances</p>
+    <div class="card-footer"><span class="tag">Concept Notes</span><span class="tag">Practice</span><span class="tag speed">⚡ Speed Review</span></div>
+  </div>
+  <div class="dash-card" onclick="openTopic('t2')">
+    <span class="card-num">2</span>
+    <h3>⚖️ Topic 2: Gravimetric Stoichiometry</h3>
+    <p>Mass → moles → mole ratio → moles → mass. The full stoichiometric process.</p>
+    <div class="card-footer"><span class="tag">Concept Notes</span><span class="tag">Practice</span><span class="tag speed">⚡ Speed Review</span></div>
+  </div>
+  <div class="dash-card" onclick="openTopic('t3')">
+    <span class="card-num">3</span>
+    <h3>📊 Topic 3: Percent Yield</h3>
+    <p>Theoretical vs actual yield, experimental uncertainties, % yield calculations</p>
+    <div class="card-footer"><span class="tag">Concept Notes</span><span class="tag">Practice</span><span class="tag speed">⚡ Speed Review</span></div>
+  </div>
+  <div class="dash-card" onclick="openTopic('t4')">
+    <span class="card-num">4</span>
+    <h3>🧪 Topic 4: Limiting & Excess Reagents</h3>
+    <p>Identify limiting reagent, calculate theoretical yield and excess leftover</p>
+    <div class="card-footer"><span class="tag">Concept Notes</span><span class="tag">Practice</span><span class="tag speed">⚡ Speed Review</span></div>
+  </div>
+  <div class="dash-card" onclick="openTopic('t5')">
+    <span class="card-num">5</span>
+    <h3>💧 Topic 5: Solution Stoichiometry</h3>
+    <p>Molarity, dilution, stoichiometry with solutions (c = n/V)</p>
+    <div class="card-footer"><span class="tag">Concept Notes</span><span class="tag">Practice</span><span class="tag speed">⚡ Speed Review</span></div>
+  </div>
+  <div class="dash-card" onclick="openTopic('t6')">
+    <span class="card-num">6</span>
+    <h3>🔬 Topic 6: Titration Analysis</h3>
+    <p>Titration process, pH/pOH calculations, multiple trials, equivalence point</p>
+    <div class="card-footer"><span class="tag">Concept Notes</span><span class="tag">Practice</span><span class="tag speed">⚡ Speed Review</span></div>
+  </div>
+  <div class="dash-card" onclick="openTopic('t7')">
+    <span class="card-num">7</span>
+    <h3>📈 Topic 7: Titration Curves & Indicators</h3>
+    <p>S-shaped curves, strong/weak acid-base, choosing indicators</p>
+    <div class="card-footer"><span class="tag">Concept Notes</span><span class="tag">Practice</span><span class="tag speed">⚡ Speed Review</span></div>
+  </div>
+</div>
+
+<!-- BACK BUTTON (visible in topic view) -->
+<div class="dash-back" id="dashBack">
+  <button onclick="backToDashboard()">← Back to All Topics</button>
+</div>
+
+<!-- CONTENT AREA (hidden by default, shown when topic selected) -->
+<div id="contentArea">
 <main>
 
 <!-- STUDY GUIDE CHECKLIST -->
@@ -2287,6 +2359,7 @@ hr.section-divider{border:none;border-top:2px dashed var(--border);margin:20px 0
 </div>
 
 </main>
+</div><!-- end contentArea -->
 
 <!-- CHAT WIDGET -->
 <div class="chat-widget">
@@ -2299,6 +2372,22 @@ hr.section-divider{border:none;border-top:2px dashed var(--border);margin:20px 0
 </div>
 
 <script>
+/* Dashboard navigation */
+function openTopic(id){
+  document.body.classList.add('topic-view');
+  // Collapse all topics first
+  document.querySelectorAll('.topic').forEach(t=>t.classList.remove('open'));
+  // Open the selected topic
+  const topic=document.getElementById(id);
+  if(topic){topic.classList.add('open');setTimeout(()=>topic.scrollIntoView({behavior:'smooth',block:'start'}),100);}
+}
+function backToDashboard(){
+  document.body.classList.remove('topic-view');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+// Check URL hash for direct topic link
+if(window.location.hash){const tid=window.location.hash.slice(1);if(document.getElementById(tid))openTopic(tid);}
+
 function toggleDark(){document.body.dataset.theme=document.body.dataset.theme==='dark'?'':'dark';localStorage.setItem('chem20-theme',document.body.dataset.theme)}
 function initChecklist(){const boxes=document.querySelectorAll('.checklist input[type=checkbox]');const saved=JSON.parse(localStorage.getItem('chem20v2-checklist')||'[]');boxes.forEach((box,i)=>{if(saved[i])box.checked=true;box.addEventListener('change',()=>saveChecklist())});updateProgress()}
 function saveChecklist(){const boxes=document.querySelectorAll('.checklist input[type=checkbox]');localStorage.setItem('chem20v2-checklist',JSON.stringify(Array.from(boxes).map(b=>b.checked)));updateProgress()}
