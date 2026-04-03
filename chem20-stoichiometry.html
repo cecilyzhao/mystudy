@@ -26,6 +26,9 @@ main{max-width:1200px;margin:0 auto;padding:20px}
 .topic.open .arrow{transform:rotate(180deg)}
 .topic-body{display:none;padding:0 20px 20px}
 .topic.open .topic-body{display:block}
+/* In topic view, hide the accordion arrow on topic headers */
+body.topic-view .topic-header{cursor:default}
+body.topic-view .topic-header .arrow{display:none}
 
 /* Sub-sections within topics */
 .sub-section{border:1px solid var(--border);border-radius:10px;margin:12px 0;overflow:hidden}
@@ -187,31 +190,31 @@ body.topic-view .nav-wrap{display:none}
 <div class="dashboard" id="dashboard">
   <div class="dash-card" data-color="blue" onclick="openTopic('t1')">
     <div class="card-icon"><span class="card-num">1</span>📐</div>
-    <div class="card-info"><h3>Mole Ratios</h3><p>Balanced equations, mole ratios, converting between moles of different substances</p></div>
+    <div class="card-info"><h3>Topic 1: Mole Ratios</h3><p>Balanced equations, mole ratios, converting between moles of different substances</p></div>
   </div>
   <div class="dash-card" data-color="purple" onclick="openTopic('t2')">
     <div class="card-icon"><span class="card-num">2</span>⚖️</div>
-    <div class="card-info"><h3>Gravimetric Stoichiometry</h3><p>Mass → moles → mole ratio → moles → mass</p></div>
+    <div class="card-info"><h3>Topic 2: Gravimetric Stoichiometry</h3><p>Mass → moles → mole ratio → moles → mass</p></div>
   </div>
   <div class="dash-card" data-color="amber" onclick="openTopic('t3')">
     <div class="card-icon"><span class="card-num">3</span>📊</div>
-    <div class="card-info"><h3>Percent Yield</h3><p>Theoretical vs actual yield, % yield calculations</p></div>
+    <div class="card-info"><h3>Topic 3: Percent Yield</h3><p>Theoretical vs actual yield, % yield calculations</p></div>
   </div>
   <div class="dash-card" data-color="emerald" onclick="openTopic('t4')">
     <div class="card-icon"><span class="card-num">4</span>🧪</div>
-    <div class="card-info"><h3>Limiting & Excess Reagents</h3><p>Identify LR, calculate theoretical yield and excess leftover</p></div>
+    <div class="card-info"><h3>Topic 4: Limiting & Excess Reagents</h3><p>Identify LR, calculate theoretical yield and excess leftover</p></div>
   </div>
   <div class="dash-card" data-color="cyan" onclick="openTopic('t5')">
     <div class="card-icon"><span class="card-num">5</span>💧</div>
-    <div class="card-info"><h3>Solution Stoichiometry</h3><p>Molarity, dilution, stoichiometry with solutions (c = n/V)</p></div>
+    <div class="card-info"><h3>Topic 5: Solution Stoichiometry</h3><p>Molarity, dilution, stoichiometry with solutions (c = n/V)</p></div>
   </div>
   <div class="dash-card" data-color="rose" onclick="openTopic('t6')">
     <div class="card-icon"><span class="card-num">6</span>🔬</div>
-    <div class="card-info"><h3>Titration Analysis</h3><p>pH/pOH calculations, multiple trials, equivalence point</p></div>
+    <div class="card-info"><h3>Topic 6: Titration Analysis</h3><p>pH/pOH calculations, multiple trials, equivalence point</p></div>
   </div>
   <div class="dash-card" data-color="orange" onclick="openTopic('t7')">
     <div class="card-icon"><span class="card-num">7</span>📈</div>
-    <div class="card-info"><h3>Titration Curves & Indicators</h3><p>S-shaped curves, strong/weak acid-base, choosing indicators</p></div>
+    <div class="card-info"><h3>Topic 7: Titration Curves & Indicators</h3><p>S-shaped curves, strong/weak acid-base, choosing indicators</p></div>
   </div>
 </div>
 
@@ -2411,10 +2414,14 @@ function buildTopicMenu(topicEl){
 function openSubSection(topicEl,subEl,menu){
   menu.style.display='none';
   subEl.style.display='';subEl.classList.add('open');
+  // Hide the accordion header bar — just show content directly
+  const hdr=subEl.querySelector('.sub-header');
+  if(hdr)hdr.style.display='none';
   const back=document.createElement('div');back.className='sub-back';
   back.innerHTML='<button>← Back to Sections</button>';
   back.querySelector('button').onclick=function(){
     subEl.style.display='none';subEl.classList.remove('open');
+    if(hdr)hdr.style.display='';
     menu.style.display='';back.remove();
     topicEl.scrollIntoView({behavior:'smooth',block:'start'});
   };
