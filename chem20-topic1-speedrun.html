@@ -5,21 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>⚡ Speed Review — Topic 1: Stoichiometry & Mole Ratios</title>
 <style>
-:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--accent:#f59e0b;--accent2:#8b5cf6;--success:#22c55e;--error:#ef4444;--border:#334155;--glow:rgba(245,158,11,.15)}
+:root{--bg:#f5f7fa;--muted:#64748b;--glass:rgba(0,0,0,.04);--card:#fff;--text:#1a1a2e;--border:#e2e8f0;--accent:#f59e0b;--accent2:#8b5cf6;--success:#16a34a;--error:#dc2626;--glow:rgba(245,158,11,.15)}
+[data-theme=dark]{--bg:#0f172a;--muted:#94a3b8;--glass:rgba(255,255,255,.04);--card:#1e293b;--text:#e2e8f0;--border:#334155;--success:#22c55e;--error:#ef4444}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh}
 .container{max-width:720px;margin:0 auto;padding:16px}
-.hero{text-align:center;padding:40px 20px 30px;background:linear-gradient(135deg,#1e293b,#0f172a);border-bottom:2px solid var(--accent)}
+.hero{text-align:center;padding:40px 20px 30px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-bottom:2px solid var(--accent)}
+[data-theme=dark] .hero{background:linear-gradient(135deg,#1e293b,#0f172a)}
 .hero h1{font-size:1.8em;margin-bottom:4px}
 .hero .emoji{font-size:2.5em;display:block;margin-bottom:8px}
-.hero .subtitle{color:#94a3b8;font-size:.95em}
+.hero .subtitle{color:var(--muted);font-size:.95em}
 .hero .time{display:inline-block;background:var(--accent);color:#000;padding:4px 14px;border-radius:20px;font-weight:700;font-size:.9em;margin-top:12px}
-.progress-bar{background:#334155;height:6px;border-radius:3px;margin:20px 0 10px;overflow:hidden}
+.progress-bar{background:var(--border);height:6px;border-radius:3px;margin:20px 0 10px;overflow:hidden}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width .5s;border-radius:3px}
-.progress-label{text-align:center;font-size:.8em;color:#94a3b8;margin-bottom:20px}
+.progress-label{text-align:center;font-size:.8em;color:var(--muted);margin-bottom:20px}
 .section{background:var(--card);border-radius:12px;margin-bottom:16px;border:1px solid var(--border);overflow:hidden}
 .section-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
-.section-header:hover{background:rgba(245,158,11,.05)}
+.section-header:hover{background:rgba(245,158,11,.08)}
 .section-header h2{font-size:1.1em;display:flex;align-items:center;gap:8px}
 .section-header .num{background:var(--accent);color:#000;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85em;flex-shrink:0}
 .section-header .arrow{transition:transform .3s;font-size:1.2em}
@@ -36,7 +38,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .warning{background:rgba(239,68,68,.1);border-left:4px solid var(--error);padding:14px 16px;border-radius:0 8px 8px 0;margin:12px 0}
 .warning .label{color:var(--error);font-weight:700;font-size:.85em;margin-bottom:4px}
 .steps{counter-reset:step;margin:12px 0}
-.step{counter-increment:step;padding:10px 14px 10px 48px;position:relative;margin:6px 0;background:rgba(255,255,255,.03);border-radius:8px}
+.step{counter-increment:step;padding:10px 14px 10px 48px;position:relative;margin:6px 0;background:var(--glass);border-radius:8px}
 .step::before{content:counter(step);position:absolute;left:12px;top:10px;background:var(--accent2);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8em;font-weight:700}
 .example{border:1px solid var(--border);border-radius:10px;margin:14px 0;overflow:hidden}
 .example-tag{background:var(--accent);color:#000;padding:8px 16px;font-weight:700;font-size:.9em}
@@ -44,7 +46,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .example-body .given{color:var(--accent);font-weight:600}
 .example-body .answer{color:var(--success);font-weight:700;font-size:1.05em}
 .example-body .highlight{background:rgba(245,158,11,.15);padding:2px 6px;border-radius:4px}
-.calc{font-family:'Segoe UI',system-ui,sans-serif;background:rgba(255,255,255,.05);padding:10px 14px;border-radius:6px;margin:8px 0;font-size:.95em;line-height:1.8;overflow-x:auto}
+.calc{font-family:'Segoe UI',system-ui,sans-serif;background:var(--glass);padding:10px 14px;border-radius:6px;margin:8px 0;font-size:.95em;line-height:1.8;overflow-x:auto}
 .quick-check{border:2px solid var(--accent2);border-radius:10px;padding:16px;margin:14px 0}
 .quick-check h3{color:var(--accent2);margin-bottom:10px;font-size:1em}
 .quick-check label{display:block;padding:8px 12px;margin:4px 0;border-radius:8px;cursor:pointer;transition:background .2s}
@@ -62,7 +64,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .done-btn{display:block;width:100%;padding:12px;background:var(--accent2);color:#fff;border:none;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer;margin-top:14px;transition:all .2s}
 .done-btn:hover{opacity:.85;transform:scale(1.01)}
 .done-btn.completed{background:var(--success)}
-.footer{text-align:center;padding:30px 20px;color:#475569;font-size:.85em}
+.footer{text-align:center;padding:30px 20px;color:var(--muted);font-size:.85em}
 .footer a{color:var(--accent);text-decoration:none}
 .confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;overflow:hidden}
 .confetti-piece{position:absolute;width:10px;height:10px;top:-20px;animation:confetti-fall 3s ease-out forwards}
@@ -72,10 +74,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 </head>
 <body>
 
-<div class="hero">
+<div class="hero" style="position:relative">
   <span class="emoji">⚡</span>
   <h1>Topic 1: Stoichiometry &amp; Mole Ratios</h1>
   <div class="subtitle">Chem 20 Stoichiometry — Exam Speed Review</div>
+  <button onclick="toggleTheme()" style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.85em" id="themeBtn">☀️ Light</button>
   <div class="time">⏱️ ~10 min</div>
 </div>
 
@@ -308,6 +311,16 @@ Overall ratio: 2 C₈H₁₈ : 25 O₂ : 16 CO₂ : 18 H₂O
 <div class="confetti-container" id="confetti"></div>
 
 <script>
+
+function toggleTheme(){
+  var b=document.body;
+  if(b.dataset.theme==='dark'){b.dataset.theme='';document.getElementById('themeBtn').textContent='\u{1F319} Dark';}
+  else{b.dataset.theme='dark';document.getElementById('themeBtn').textContent='\u{2600}\u{FE0F} Light';}
+  localStorage.setItem('speedrun-theme',b.dataset.theme);
+}
+(function(){var t=localStorage.getItem('speedrun-theme');if(t==='dark'){document.body.dataset.theme='dark';}else{document.body.dataset.theme='';var btn=document.getElementById('themeBtn');if(btn)btn.textContent='\u{1F319} Dark';}})();
+
+
 const sections=['s1','s2','s3','s4','s5'];
 const done=new Set(JSON.parse(localStorage.getItem('t1speedrun')||'[]'));
 

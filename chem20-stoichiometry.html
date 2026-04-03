@@ -16,10 +16,7 @@ header span{font-size:.85em;opacity:.8}
 .controls{display:flex;gap:8px;flex-wrap:wrap}
 .controls button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:.8em}
 .controls button:hover{background:rgba(255,255,255,.25)}
-nav{background:var(--nav-bg);padding:12px 20px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:1200px;margin:0 auto}
-nav button{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:#94a3b8;padding:10px 16px;border-radius:10px;cursor:pointer;font-size:.85em;transition:all .2s;flex:1;min-width:140px;max-width:200px;text-align:center;line-height:1.3}
-nav button:hover,nav button.active{background:var(--accent);color:#fff;border-color:var(--accent);transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,.3)}
-.nav-wrap{background:var(--nav-bg);padding:0 0 4px}
+/* nav removed — dashboard cards replace it */
 main{max-width:1200px;margin:0 auto;padding:20px}
 .topic{background:var(--card);border-radius:12px;margin-bottom:16px;border:1px solid var(--border);overflow:hidden;transition:all .3s}
 .topic-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
@@ -125,6 +122,23 @@ sup{font-size:.78em;vertical-align:super}
 .info-list{margin:8px 0 8px 20px}
 .info-list li{margin:4px 0}
 hr.section-divider{border:none;border-top:2px dashed var(--border);margin:20px 0}
+/* Topic interior module grid */
+.topic-menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:16px 0}
+.topic-menu-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;cursor:pointer;transition:all .25s;text-align:center}
+.topic-menu-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12);border-color:var(--accent)}
+.topic-menu-card .tm-icon{font-size:1.8em;margin-bottom:6px}
+.topic-menu-card h4{font-size:.95em;color:var(--accent);margin-bottom:4px}
+.topic-menu-card p{font-size:.8em;color:#94a3b8}
+.topic-menu-card.tm-concepts{border-left:4px solid #2563eb}
+.topic-menu-card.tm-fillin{border-left:4px solid #7c3aed}
+.topic-menu-card.tm-practice{border-left:4px solid #d97706}
+.topic-menu-card.tm-extra{border-left:4px solid #059669}
+.topic-menu-card.tm-quiz{border-left:4px solid #dc2626}
+.topic-menu-card.tm-speed{border-left:4px solid #f59e0b;background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(139,92,246,.08))}
+.sub-back{margin:10px 0}
+.sub-back button{background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.88em}
+.sub-back button:hover{opacity:.85}
+
 /* Dashboard grid */
 .dashboard{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;padding:20px;max-width:1200px;margin:0 auto}
 .dash-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
@@ -157,17 +171,7 @@ body.topic-view .nav-wrap{display:none}
 </div>
 </div>
 </header>
-<div class="nav-wrap">
-<nav id="topnav">
-<button onclick="scrollTo2('t1')">📌 T1<br>Mole Ratios</button>
-<button onclick="scrollTo2('t2')">📌 T2<br>Gravimetric</button>
-<button onclick="scrollTo2('t3')">📌 T3<br>Percent Yield</button>
-<button onclick="scrollTo2('t4')">📌 T4<br>Limiting Reagent</button>
-<button onclick="scrollTo2('t5')">📌 T5<br>Solutions</button>
-<button onclick="scrollTo2('t6')">📌 T6<br>Titrations</button>
-<button onclick="scrollTo2('t7')">📌 T7<br>Titration Curves</button>
-</nav>
-</div>
+<!-- nav removed: dashboard cards replace it -->
 
 <!-- DASHBOARD VIEW -->
 <div class="dashboard" id="dashboard">
@@ -2373,13 +2377,67 @@ body.topic-view .nav-wrap{display:none}
 
 <script>
 /* Dashboard navigation */
+const subMeta=[
+  {cls:'concepts',icon:'📖',label:'Concept Notes',desc:'Key ideas & formulas',card:'tm-concepts'},
+  {cls:'fillin',icon:'✏️',label:'Fill-in-the-Blank',desc:'Test your recall',card:'tm-fillin'},
+  {cls:'practice-h',icon:'📝',label:'Practice Problems',desc:'Worked examples & exercises',card:'tm-practice'},
+  {cls:'extra',icon:'📚',label:'Extra Practice',desc:'More problems to master',card:'tm-extra'},
+  {cls:'quiz-h',icon:'🎯',label:'Quick Quiz',desc:'Multiple choice check',card:'tm-quiz'}
+];
+function buildTopicMenu(topicEl){
+  let existing=topicEl.querySelector('.topic-menu');
+  if(existing)return;
+  const body=topicEl.querySelector('.topic-body');
+  const subs=body.querySelectorAll('.sub-section');
+  const menu=document.createElement('div');menu.className='topic-menu';
+  subs.forEach((s,i)=>{
+    s.classList.remove('open');s.style.display='none';
+    const hdr=s.querySelector('.sub-header');
+    const m=subMeta.find(x=>hdr&&hdr.classList.contains(x.cls))||subMeta[0];
+    const card=document.createElement('div');card.className='topic-menu-card '+m.card;
+    card.innerHTML='<div class="tm-icon">'+m.icon+'</div><h4>'+m.label+'</h4><p>'+m.desc+'</p>';
+    card.onclick=function(){openSubSection(topicEl,s,menu);};
+    menu.appendChild(card);
+  });
+  // Speed Review card
+  const topicNum=topicEl.id.replace('t','');
+  const speedBtn=body.querySelector('a[href*="speedrun"]');
+  if(speedBtn){
+    const card=document.createElement('div');card.className='topic-menu-card tm-speed';
+    card.innerHTML='<div class="tm-icon">⚡</div><h4>Speed Review</h4><p>10-min exam prep</p>';
+    card.onclick=function(){window.location.href='chem20-topic'+topicNum+'-speedrun.html';};
+    menu.appendChild(card);
+    // Hide the old speed review button
+    const oldBtn=speedBtn.closest('div[style*="margin"]');if(oldBtn)oldBtn.style.display='none';
+  }
+  body.insertBefore(menu,body.firstChild);
+}
+function openSubSection(topicEl,subEl,menu){
+  menu.style.display='none';
+  subEl.style.display='';subEl.classList.add('open');
+  const back=document.createElement('div');back.className='sub-back';
+  back.innerHTML='<button>← Back to Sections</button>';
+  back.querySelector('button').onclick=function(){
+    subEl.style.display='none';subEl.classList.remove('open');
+    menu.style.display='';back.remove();
+    topicEl.scrollIntoView({behavior:'smooth',block:'start'});
+  };
+  subEl.parentNode.insertBefore(back,subEl);
+  subEl.scrollIntoView({behavior:'smooth',block:'start'});
+}
 function openTopic(id){
   document.body.classList.add('topic-view');
-  // Collapse all topics first
   document.querySelectorAll('.topic').forEach(t=>t.classList.remove('open'));
-  // Open the selected topic
   const topic=document.getElementById(id);
-  if(topic){topic.classList.add('open');setTimeout(()=>topic.scrollIntoView({behavior:'smooth',block:'start'}),100);}
+  if(topic){
+    topic.classList.add('open');
+    buildTopicMenu(topic);
+    // Reset: show menu, hide all sub-sections
+    const menu=topic.querySelector('.topic-menu');if(menu)menu.style.display='';
+    topic.querySelectorAll('.sub-section').forEach(s=>{s.style.display='none';s.classList.remove('open');});
+    topic.querySelectorAll('.sub-back').forEach(b=>b.remove());
+    setTimeout(()=>topic.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  }
 }
 function backToDashboard(){
   document.body.classList.remove('topic-view');
