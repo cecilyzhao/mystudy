@@ -2535,11 +2535,12 @@ async function sendChat(){
       method:'POST',headers:{'Authorization':'Bearer '+_ak,'Content-Type':'application/json'},
       body:JSON.stringify({model:'gpt-4o-mini',messages:chatHistory.slice(-10),max_tokens:300,temperature:0.3})
     });
-    const j=await r.json();
-    const reply=j.choices?j.choices[0].message.content:'Sorry, something went wrong. Try again!';
+    const txt=await r.text();
+    let reply;
+    try{const j=JSON.parse(txt);reply=j.choices?j.choices[0].message.content:(j.error?j.error.message:'Error: '+txt.slice(0,100));}catch(pe){reply='Parse error: '+txt.slice(0,100);}
     chatHistory.push({role:'assistant',content:reply});
     document.getElementById('typing').innerHTML=escHtml(reply).replace(/\n/g,'<br>');
-  }catch(e){document.getElementById('typing').textContent='Connection error. Please try again.';}
+  }catch(e){document.getElementById('typing').textContent='Error: '+e.name+' - '+e.message;}
   document.getElementById('typing').removeAttribute('id');
   inp.disabled=false;inp.focus();msgs.scrollTop=msgs.scrollHeight;
 }
